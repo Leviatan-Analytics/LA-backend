@@ -5,3 +5,18 @@
 <h3 align="center">
   Leviatan Analytics Backend
 </h3>
+
+### New feature
+ - Must branch from: dev
+ - Must merge back into: dev
+ - Branch naming convention: feature-[featureName]
+
+### Bugs
+ - Must branch from: dev
+ - Must merge back into: dev
+ - Branch naming convention: bug-[bugName]
+
+ ### Hotfix
+  - Must branch from: dev
+  - Must merge back into: dev
+  - Branch naming convention: hotfix-[hotfixName]
