@@ -17,6 +17,6 @@
  - Branch naming convention: bug-[bugName]
 
  ### Hotfix
-  - Must branch from: dev
-  - Must merge back into: dev
+  - Must branch from: master
+  - Must merge back into: master
   - Branch naming convention: hotfix-[hotfixName]
