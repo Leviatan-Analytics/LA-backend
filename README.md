@@ -20,3 +20,15 @@
   - Must branch from: dev
   - Must merge back into: dev
   - Branch naming convention: hotfix-[hotfixName]
+
+### Available Scripts
+
+In the project directory, you can run:
+
+### `./mvnw spring-boot:run`
+
+Starts Spring backend.
+
+### `docker-compose up`
+
+Starts Spring Backend and Postgres db with Docker
