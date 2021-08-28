@@ -9,6 +9,9 @@ import com.leviatan.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class MatchAnalysisService {
 
@@ -23,16 +26,15 @@ public class MatchAnalysisService {
 
     public void saveMatchAnalysis(MatchAnalysisDto matchAnalysis) {
         //Get logged user data
-        User user = User.builder()
-                .username("test")
-                .email("test@gmail.com")
-                .password("test123")
-                .build();
-        user = userRepository.save(user);
+        User user = userRepository.findUserByEmail("test@gmail.com").orElseThrow(() -> new NotFoundException("User not found"));
         matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user));
     }
 
     public MatchAnalysisDto getMatchAnalysis(String analysisId) {
         return MatchAnalysisDto.from(matchAnalysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found")));
+    }
+
+    public List<MatchAnalysisDto> getAllMatchAnalyses() {
+        return matchAnalysisRepository.findAll().stream().map(MatchAnalysisDto::from).collect(Collectors.toList());
     }
 }

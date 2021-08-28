@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/analysis")
@@ -21,6 +22,11 @@ public class MatchAnalysisController {
     @PostMapping
     public void saveMatchAnalysis(@RequestBody @Valid MatchAnalysisDto matchAnalysis){
         matchAnalysisService.saveMatchAnalysis(matchAnalysis);
+    }
+
+    @GetMapping
+    public List<MatchAnalysisDto> getAllMatchAnalyses() {
+        return matchAnalysisService.getAllMatchAnalyses();
     }
 
     @GetMapping("/{analysisId}")
