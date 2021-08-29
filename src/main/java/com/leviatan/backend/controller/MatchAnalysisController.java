@@ -1,6 +1,7 @@
 package com.leviatan.backend.controller;
 
 import com.leviatan.backend.dto.MatchAnalysisDto;
+import com.leviatan.backend.model.analysis.MatchAnalysis;
 import com.leviatan.backend.service.MatchAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ public class MatchAnalysisController {
     }
 
     @PostMapping
-    public void saveMatchAnalysis(@RequestBody @Valid MatchAnalysisDto matchAnalysis){
-        matchAnalysisService.saveMatchAnalysis(matchAnalysis);
+    public MatchAnalysis saveMatchAnalysis(@RequestBody @Valid MatchAnalysisDto matchAnalysis){
+        return matchAnalysisService.saveMatchAnalysis(matchAnalysis);
     }
 
     @GetMapping

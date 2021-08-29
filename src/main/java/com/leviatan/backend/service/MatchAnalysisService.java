@@ -24,10 +24,10 @@ public class MatchAnalysisService {
         this.userRepository = userRepository;
     }
 
-    public void saveMatchAnalysis(MatchAnalysisDto matchAnalysis) {
+    public MatchAnalysis saveMatchAnalysis(MatchAnalysisDto matchAnalysis) {
         //Get logged user data
         User user = userRepository.findUserByEmail("test@gmail.com").orElseThrow(() -> new NotFoundException("User not found"));
-        matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user));
+        return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user));
     }
 
     public MatchAnalysisDto getMatchAnalysis(String analysisId) {
