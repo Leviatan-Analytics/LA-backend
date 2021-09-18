@@ -1,7 +1,7 @@
 package com.leviatan.backend.dto;
 
 import com.leviatan.backend.model.analysis.MatchAnalysis;
-import com.leviatan.backend.model.analysis.MatchPlayerInfo;
+import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.analysis.position.MatchFrameInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +34,7 @@ public class MatchAnalysisDto {
     @NotNull
     @NotEmpty
     @Size(min = 10)
-    private List<MatchPlayerInfo> players;
+    private List<PlayerMetadata> players;
 
     @NotNull
     @NotEmpty

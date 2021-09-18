@@ -27,12 +27,12 @@ public class MatchAnalysisController {
     }
 
     @GetMapping
-    public List<MatchAnalysisDto> getAllMatchAnalyses() {
+    public List<MatchAnalysis> getAllMatchAnalyses() {
         return matchAnalysisService.getAllMatchAnalyses();
     }
 
     @GetMapping("/{analysisId}")
-    public MatchAnalysisDto getMatchAnalysis(@PathVariable(name = "analysisId") String analysisId){
+    public MatchAnalysis getMatchAnalysis(@PathVariable(name = "analysisId") String analysisId){
         return matchAnalysisService.getMatchAnalysis(analysisId);
     }
 }

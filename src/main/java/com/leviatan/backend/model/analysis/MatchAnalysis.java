@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leviatan.backend.dto.MatchAnalysisDto;
 import com.leviatan.backend.model.UUIDEntity;
 import com.leviatan.backend.model.User;
+import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.analysis.position.MatchFrameInfo;
 import lombok.*;
 import org.hibernate.annotations.Type;
@@ -35,7 +36,7 @@ public class MatchAnalysis extends UUIDEntity {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     @Basic(fetch = FetchType.LAZY)
-    private List<MatchPlayerInfo> players;
+    private List<PlayerMetadata> players;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")

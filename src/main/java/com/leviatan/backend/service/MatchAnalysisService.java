@@ -30,11 +30,11 @@ public class MatchAnalysisService {
         return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user));
     }
 
-    public MatchAnalysisDto getMatchAnalysis(String analysisId) {
-        return MatchAnalysisDto.from(matchAnalysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found")));
+    public MatchAnalysis getMatchAnalysis(String analysisId) {
+        return matchAnalysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
     }
 
-    public List<MatchAnalysisDto> getAllMatchAnalyses() {
-        return matchAnalysisRepository.findAll().stream().map(MatchAnalysisDto::from).collect(Collectors.toList());
+    public List<MatchAnalysis> getAllMatchAnalyses() {
+        return matchAnalysisRepository.findAll();
     }
 }

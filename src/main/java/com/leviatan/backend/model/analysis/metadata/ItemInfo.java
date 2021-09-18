@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Builder
 public class ItemInfo implements Serializable {
     private String itemName;
+    private Integer count;
     private String itemId;
     private String slot;
 }

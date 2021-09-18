@@ -1,5 +1,6 @@
 package com.leviatan.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -15,5 +16,6 @@ import javax.persistence.Table;
 public class User extends UUIDEntity{
     private String username;
     private String email;
+    @JsonIgnore
     private String password;
 }
