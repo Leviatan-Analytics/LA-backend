@@ -2,10 +2,13 @@ package com.leviatan.backend.service;
 
 import com.leviatan.backend.dto.manual_analysis.ManualMatchAnalysisDto;
 import com.leviatan.backend.dto.MatchAnalysisDto;
+import com.leviatan.backend.dto.manual_analysis.ManualMatchAnalysisResult;
+import com.leviatan.backend.dto.manual_analysis.ManualMatchResultRequestDto;
 import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.factory.ManualMatchAnalysisResultFactory;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.model.analysis.MatchAnalysis;
+import com.leviatan.backend.model.analysis.Team;
 import com.leviatan.backend.model.manual_analysis.ManualMatchAnalysis;
 import com.leviatan.backend.repository.ManualMatchAnalysisRepository;
 import com.leviatan.backend.repository.MatchAnalysisRepository;
@@ -47,6 +50,11 @@ public class MatchAnalysisService {
     public ManualMatchAnalysis saveManualMatchAnalysis(ManualMatchAnalysisDto matchAnalysis) {
         User user = getLoggedUser();
         return manualMatchAnalysisRepository.save(ManualMatchAnalysis.from(matchAnalysis, user));
+    }
+
+    public ManualMatchAnalysisResult getManualAnalysisResult(ManualMatchResultRequestDto requestDto) {
+        List<ManualMatchAnalysis> analyses = manualMatchAnalysisRepository.findAllById(requestDto.getMatchIds());
+        return manualMatchAnalysisResultFactory.convert(analyses, requestDto.getTeams());
     }
 
     public List<ManualMatchAnalysis> getAllManualMatchAnalyses() {
