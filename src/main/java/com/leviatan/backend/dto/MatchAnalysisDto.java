@@ -2,7 +2,9 @@ package com.leviatan.backend.dto;
 
 import com.leviatan.backend.model.analysis.MatchAnalysis;
 import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
+import com.leviatan.backend.model.analysis.metadata.event.EventInfo;
 import com.leviatan.backend.model.analysis.position.MatchFrameInfo;
+import com.leviatan.backend.model.analysis.position.PlayerReducedMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,6 +42,12 @@ public class MatchAnalysisDto {
     @NotEmpty
     private List<MatchFrameInfo> frames;
 
+    @NotNull
+    private List<EventInfo> events;
+
+    @NotNull
+    private List<PlayerFrameMetadata> framesMetadata;
+
     public static MatchAnalysisDto from(MatchAnalysis matchAnalysis) {
         return MatchAnalysisDto.builder()
                 .analysisDate(matchAnalysis.getAnalysisDate())
@@ -48,6 +56,8 @@ public class MatchAnalysisDto {
                 .matchDuration(matchAnalysis.getMatchDuration())
                 .players(matchAnalysis.getPlayers())
                 .frames(matchAnalysis.getFrames())
+                .events(matchAnalysis.getEvents())
+                .framesMetadata(matchAnalysis.getFramesMetadata())
                 .build();
     }
 }
