@@ -8,11 +8,11 @@ import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.factory.ManualMatchAnalysisResultFactory;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.model.analysis.MatchAnalysis;
-import com.leviatan.backend.model.analysis.Team;
 import com.leviatan.backend.model.manual_analysis.ManualMatchAnalysis;
 import com.leviatan.backend.repository.ManualMatchAnalysisRepository;
 import com.leviatan.backend.repository.MatchAnalysisRepository;
 import com.leviatan.backend.repository.UserRepository;
+import com.leviatan.backend.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +23,19 @@ public class MatchAnalysisService {
 
     private final MatchAnalysisRepository matchAnalysisRepository;
     private final ManualMatchAnalysisRepository manualMatchAnalysisRepository;
-    private final UserRepository userRepository;
     private final ManualMatchAnalysisResultFactory manualMatchAnalysisResultFactory;
+    private final SessionUtils sessionUtils;
 
     @Autowired
-    public MatchAnalysisService(MatchAnalysisRepository matchAnalysisRepository, ManualMatchAnalysisRepository manualMatchAnalysisRepository, UserRepository userRepository, ManualMatchAnalysisResultFactory manualMatchAnalysisResultFactory) {
+    public MatchAnalysisService(MatchAnalysisRepository matchAnalysisRepository, ManualMatchAnalysisRepository manualMatchAnalysisRepository, ManualMatchAnalysisResultFactory manualMatchAnalysisResultFactory, SessionUtils sessionUtils) {
         this.matchAnalysisRepository = matchAnalysisRepository;
         this.manualMatchAnalysisRepository = manualMatchAnalysisRepository;
-        this.userRepository = userRepository;
         this.manualMatchAnalysisResultFactory = manualMatchAnalysisResultFactory;
+        this.sessionUtils = sessionUtils;
     }
 
     public MatchAnalysis saveMatchAnalysis(MatchAnalysisDto matchAnalysis) {
-        User user = getLoggedUser();
+        User user = sessionUtils.getLoggedUserInfo();
         return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user));
     }
 
@@ -44,11 +44,11 @@ public class MatchAnalysisService {
     }
 
     public List<MatchAnalysis> getAllMatchAnalyses() {
-        return matchAnalysisRepository.findAll();
+        return matchAnalysisRepository.findAllByUser_Id(sessionUtils.getLoggedUserInfo().getId());
     }
 
     public ManualMatchAnalysis saveManualMatchAnalysis(ManualMatchAnalysisDto matchAnalysis) {
-        User user = getLoggedUser();
+        User user = sessionUtils.getLoggedUserInfo();
         return manualMatchAnalysisRepository.save(ManualMatchAnalysis.from(matchAnalysis, user));
     }
 
@@ -58,10 +58,7 @@ public class MatchAnalysisService {
     }
 
     public List<ManualMatchAnalysis> getAllManualMatchAnalyses() {
-        return manualMatchAnalysisRepository.findAll();
+        return manualMatchAnalysisRepository.findAllByUser_Id(sessionUtils.getLoggedUserInfo().getId());
     }
 
-    private User getLoggedUser(){
-        return userRepository.findUserByEmail("test@gmail.com").orElseThrow(() -> new NotFoundException("User not found"));
-    }
 }
