@@ -6,6 +6,7 @@ import com.leviatan.backend.dto.auth.LoginRequest;
 import com.leviatan.backend.dto.auth.LoginResponse;
 import com.leviatan.backend.dto.auth.RegisterRequest;
 import com.leviatan.backend.exception.BadRequestException;
+import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class AuthService {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        return LoginResponse.from(userDetails, jwt);
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new NotFoundException("User not found"));
+        return LoginResponse.from(user, jwt);
     }
 
     public User registerUser(RegisterRequest registerRequest) {

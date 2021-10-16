@@ -1,4 +1,4 @@
-package com.leviatan.backend.dto.auth;
+package com.leviatan.backend.dto.user;
 
 import com.leviatan.backend.model.User;
 import lombok.AllArgsConstructor;
@@ -6,23 +6,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginResponse {
-    private String token;
-    private String id;
+public class UserInfo {
+
     private String username;
+
     private String email;
+
+    private String leagueClientPath;
+
+    private String leagueClientBase;
+
     private boolean pathsSet;
 
-    public static LoginResponse from(User user, String jwt) {
-        return LoginResponse.builder()
-                .token(jwt)
-                .id(user.getId())
+    public static UserInfo from(User user) {
+        return UserInfo.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .leagueClientPath(user.getLeagueClientPath())
+                .leagueClientBase(user.getLeagueClientBase())
                 .pathsSet(user.getLeagueClientPath() != null && user.getLeagueClientBase() != null)
                 .build();
     }

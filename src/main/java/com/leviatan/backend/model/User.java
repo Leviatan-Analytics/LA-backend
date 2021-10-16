@@ -31,4 +31,8 @@ public class User extends UUIDEntity{
     @NotBlank
     @Size(max = 120)
     private String password;
+
+    private String leagueClientPath;
+
+    private String leagueClientBase;
 }
