@@ -11,6 +11,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class PlayerPosition implements Serializable {
     private String username;
-    private Double x;
-    private Double y;
+    private Integer x;
+    private Integer y;
 }
