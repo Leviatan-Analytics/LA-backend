@@ -35,4 +35,6 @@ public class User extends UUIDEntity{
     private String leagueClientPath;
 
     private String leagueClientBase;
+
+    private String leagueReplay;
 }

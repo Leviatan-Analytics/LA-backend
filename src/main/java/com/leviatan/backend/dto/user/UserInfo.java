@@ -21,6 +21,8 @@ public class UserInfo {
 
     private String leagueClientBase;
 
+    private String leagueReplay;
+
     private boolean pathsSet;
 
     public static UserInfo from(User user) {
@@ -29,7 +31,10 @@ public class UserInfo {
                 .email(user.getEmail())
                 .leagueClientPath(user.getLeagueClientPath())
                 .leagueClientBase(user.getLeagueClientBase())
-                .pathsSet(user.getLeagueClientPath() != null && user.getLeagueClientBase() != null)
+                .leagueReplay(user.getLeagueReplay())
+                .pathsSet(user.getLeagueClientPath() != null
+                        && user.getLeagueClientBase() != null
+                        && user.getLeagueReplay() != null)
                 .build();
     }
 }

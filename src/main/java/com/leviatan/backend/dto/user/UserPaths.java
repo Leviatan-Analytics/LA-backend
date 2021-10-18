@@ -20,10 +20,14 @@ public class UserPaths {
     @NotNull
     private String leagueClientBase;
 
+    @NotNull
+    private String leagueReplay;
+
     public static UserPaths from(User user) {
         return UserPaths.builder()
                 .leagueClientPath(user.getLeagueClientPath())
                 .leagueClientBase(user.getLeagueClientBase())
+                .leagueReplay(user.getLeagueReplay())
                 .build();
     }
 }

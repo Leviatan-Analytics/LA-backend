@@ -24,6 +24,7 @@ public class UserService {
         User loggedUser = sessionUtils.getLoggedUserInfo();
         loggedUser.setLeagueClientBase(userPaths.getLeagueClientBase());
         loggedUser.setLeagueClientPath(userPaths.getLeagueClientPath());
+        loggedUser.setLeagueReplay(userPaths.getLeagueReplay());
         return UserPaths.from(userRepository.save(loggedUser));
     }
 
