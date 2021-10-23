@@ -3,7 +3,7 @@ package com.leviatan.backend.model.analysis;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leviatan.backend.dto.MatchAnalysisDto;
 import com.leviatan.backend.dto.PlayerFrameMetadata;
-import com.leviatan.backend.model.UUIDEntity;
+import com.leviatan.backend.model.Analysis;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.analysis.metadata.event.EventInfo;
@@ -21,9 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MatchAnalysis extends UUIDEntity {
-    @ManyToOne
-    private User user;
+public class MatchAnalysis extends Analysis {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime analysisDate;
@@ -56,8 +54,7 @@ public class MatchAnalysis extends UUIDEntity {
     private List<PlayerFrameMetadata> framesMetadata;
 
     public static MatchAnalysis from(MatchAnalysisDto matchAnalysisDto, User user) {
-        return MatchAnalysis.builder()
-                .user(user)
+        MatchAnalysis analysis = MatchAnalysis.builder()
                 .analysisDate(matchAnalysisDto.getAnalysisDate())
                 .matchDate(matchAnalysisDto.getMatchDate())
                 .matchId(matchAnalysisDto.getMatchId())
@@ -67,5 +64,7 @@ public class MatchAnalysis extends UUIDEntity {
                 .events(matchAnalysisDto.getEvents())
                 .framesMetadata(matchAnalysisDto.getFramesMetadata())
                 .build();
+        analysis.setUser(user);
+        return analysis;
     }
 }

@@ -1,5 +1,6 @@
 package com.leviatan.backend.model.analysis.metadata;
 
+import com.leviatan.backend.model.analysis.Team;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.List;
 @Builder
 public class PlayerMetadata implements Serializable {
     private String championName;
+    private Team team;
     private List<ItemInfo> items;
     private Integer level;
     private String position;

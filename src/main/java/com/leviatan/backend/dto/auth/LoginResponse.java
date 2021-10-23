@@ -23,7 +23,9 @@ public class LoginResponse {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .pathsSet(user.getLeagueClientPath() != null && user.getLeagueClientBase() != null)
+                .pathsSet(user.getLeagueClientPath() != null
+                        && user.getLeagueClientBase() != null
+                        && user.getLeagueReplay() != null)
                 .build();
     }
 }
