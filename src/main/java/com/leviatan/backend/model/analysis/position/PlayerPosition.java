@@ -10,7 +10,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerPosition implements Serializable {
-    private String username;
+    private String summonerName;
     private Integer x;
     private Integer y;
 }
