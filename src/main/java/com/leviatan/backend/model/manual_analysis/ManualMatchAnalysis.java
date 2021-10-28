@@ -31,11 +31,6 @@ public class ManualMatchAnalysis extends Analysis {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     @Basic(fetch = FetchType.LAZY)
-    private MatchInfo matchPlayers;
-
-    @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
-    @Basic(fetch = FetchType.LAZY)
     private ManualMatchSideAnalysis redSideAnalysis;
 
     @Type(type = "jsonb")
@@ -50,7 +45,6 @@ public class ManualMatchAnalysis extends Analysis {
                 .matchDate(matchAnalysis.getMatchInfo().getMatchDate())
                 .matchId(matchAnalysis.getMatchInfo().getMatchId())
                 .matchDuration(matchAnalysis.getMatchInfo().getMatchDuration())
-                .matchPlayers(new MatchInfo(matchAnalysis.getMatchInfo().getBlueTeamPlayers(), matchAnalysis.getMatchInfo().getRedTeamPlayers()))
                 .redSideAnalysis(matchAnalysis.getRedSideAnalysis())
                 .blueSideAnalysis(matchAnalysis.getBlueSideAnalysis())
                 .build();

@@ -4,6 +4,7 @@ import com.leviatan.backend.model.analysis.position.PlayerPosition;
 import com.leviatan.backend.model.manual_analysis.bushes.BushInfo;
 import com.leviatan.backend.model.manual_analysis.jungle.JunglePath;
 import com.leviatan.backend.model.manual_analysis.objectives.ObjectiveInfo;
+import com.leviatan.backend.model.manual_analysis.player.PlayerInfo;
 import com.leviatan.backend.model.manual_analysis.structures.StructureInfo;
 import com.leviatan.backend.model.manual_analysis.wards.WardPosition;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ManualMatchSideAnalysis implements Serializable {
+
+    private String team;
+
+    private List<PlayerInfo> players;
 
     private List<WardPosition> wards;
 
