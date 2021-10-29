@@ -1,6 +1,7 @@
 package com.leviatan.backend.controller;
 
 import com.leviatan.backend.dto.user.UserInfo;
+import com.leviatan.backend.dto.user.UserInfoUpdate;
 import com.leviatan.backend.dto.user.UserPaths;
 import com.leviatan.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,10 @@ public class UserController {
     @GetMapping("/info")
     public UserInfo getUserInfo() {
         return userService.getUserInfo();
+    }
+
+    @PostMapping("/update")
+    public UserInfo updateUserData(@RequestBody @Valid UserInfoUpdate userInfoUpdate) {
+        return userService.updateUserInfo(userInfoUpdate);
     }
 }
