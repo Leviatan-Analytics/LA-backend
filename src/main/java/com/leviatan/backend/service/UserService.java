@@ -40,7 +40,7 @@ public class UserService {
     public UserInfo updateUserInfo(UserInfoUpdate userInfoUpdate) {
         User loggedUser = sessionUtils.getLoggedUserInfo();
 
-        if (loggedUser.getPassword() != null){
+        if (userInfoUpdate.getPassword() != null && userInfoUpdate.getNewPassword() != null){
             if (!passwordEncoder.matches(userInfoUpdate.getPassword(), loggedUser.getPassword()))
                 throw new BadRequestException("Incorrect Password");
             loggedUser.setPassword(passwordEncoder.encode(userInfoUpdate.getNewPassword()));
