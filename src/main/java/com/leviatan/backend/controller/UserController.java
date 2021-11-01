@@ -31,7 +31,7 @@ public class UserController {
         return userService.getUserInfo();
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public UserInfo updateUserData(@RequestBody @Valid UserInfoUpdate userInfoUpdate) {
         return userService.updateUserInfo(userInfoUpdate);
     }
