@@ -1,8 +1,6 @@
 package com.leviatan.backend.controller;
 
-import com.leviatan.backend.dto.auth.LoginRequest;
-import com.leviatan.backend.dto.auth.LoginResponse;
-import com.leviatan.backend.dto.auth.RegisterRequest;
+import com.leviatan.backend.dto.auth.*;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +28,15 @@ public class AuthController {
     @PostMapping("/register")
     public User registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         return authService.registerUser(registerRequest);
+    }
+
+    @PostMapping("/reset-password")
+    public void resetPassword(@Valid @RequestBody PasswordReset passwordReset) {
+        authService.resetPassword(passwordReset);
+    }
+
+    @PostMapping("/change-password")
+    public User changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        return authService.changePassword(changePasswordRequest);
     }
 }

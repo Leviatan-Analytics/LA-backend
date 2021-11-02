@@ -46,7 +46,7 @@ public class UserService {
             loggedUser.setPassword(passwordEncoder.encode(userInfoUpdate.getNewPassword()));
         }
 
-        if (userInfoUpdate.getEmail() != null) {
+        if (userInfoUpdate.getEmail() != null && !userRepository.existsByEmail(userInfoUpdate.getEmail())) {
             loggedUser.setEmail(userInfoUpdate.getEmail());
         }
 
