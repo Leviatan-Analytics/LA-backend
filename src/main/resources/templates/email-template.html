@@ -27,13 +27,11 @@
     <tr>
         <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
             <p th:text="${'Dear ' + firstName}"></p>
-            <p>
-                You've requested a password reset.
-            </p>
-            <p> Use the following code in the app</p>
+            <p> You've requested a password reset.</p>
+            <p> Use the following token in the app: </p>
             <p th:text ="${token}"></p>
             <p> </p>
-            <p>Thanks</p>
+            <p>Thanks!</p>
         </td>
     </tr>
 </table>
