@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,12 @@ public class MatchAnalysisService {
                     params.getAnalysisType().equals(AnalysisType.MANUAL_ANALYSIS) ? "ManualMatchAnalysis" : "MatchAnalysis",
                     pageRequest);
         }
+    }
+
+    @Transactional
+    public void deleteMatch(String analysisId) {
+        final User loggedUser = sessionUtils.getLoggedUserInfo();
+        analysisRepository.deleteAnalysisByIdAndUser_Id(analysisId, loggedUser.getId());
     }
 
     private List<Sort.Order> getOrderList(Sort.Direction direction, List<String> orderList) {

@@ -79,4 +79,9 @@ public class MatchAnalysisController {
                 .build();
         return matchAnalysisService.getAllAnalysesPaginated(params);
     }
+
+    @DeleteMapping("/{analysisId}")
+    public void deleteAnalysis(@PathVariable(name = "analysisId") String analysisId) {
+        matchAnalysisService.deleteMatch(analysisId);
+    }
 }
