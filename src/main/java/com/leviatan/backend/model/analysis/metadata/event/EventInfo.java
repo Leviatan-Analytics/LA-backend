@@ -12,21 +12,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventInfo implements Serializable {
-    private String eventId;
-    private String eventName;
-    private Double eventTime;
+    private String EventId;
+    private String EventName;
+    private Double EventTime;
 
-    private String acer;
-    private String acingTeam;
+    private String Acer;
+    private String AcingTeam;
 
-    private List<String> assisters;
-    private String killerName;
-    private String victimName;
+    private List<String> Assisters;
+    private String KillerName;
+    private String VictimName;
 
-    private String inhibKilled;
+    private String InhibKilled;
 
-    private Integer killStreak;
+    private Integer KillStreak;
 
-    private String turretKilled;
+    private String TurretKilled;
 
 }

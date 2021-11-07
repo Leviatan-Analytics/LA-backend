@@ -43,7 +43,7 @@ public class MatchAnalysisController {
     }
 
     @GetMapping("/{analysisId}")
-    public MatchAnalysis getMatchAnalysis(@PathVariable(name = "analysisId") String analysisId){
+    public Analysis getMatchAnalysis(@PathVariable(name = "analysisId") String analysisId){
         return matchAnalysisService.getMatchAnalysis(analysisId);
     }
 

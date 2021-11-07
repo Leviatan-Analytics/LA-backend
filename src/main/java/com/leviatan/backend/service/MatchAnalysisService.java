@@ -53,8 +53,8 @@ public class MatchAnalysisService {
         return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user));
     }
 
-    public MatchAnalysis getMatchAnalysis(String analysisId) {
-        return matchAnalysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
+    public Analysis getMatchAnalysis(String analysisId) {
+        return analysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
     }
 
     public List<MatchAnalysis> getAllMatchAnalyses() {
