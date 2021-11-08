@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leviatan.backend.dto.manual_analysis.ManualMatchAnalysisDto;
 import com.leviatan.backend.model.Analysis;
 import com.leviatan.backend.model.User;
+import com.leviatan.backend.service.ReducedAnalysisDto;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -28,6 +29,8 @@ public class ManualMatchAnalysis extends Analysis {
 
     private Long matchDuration;
 
+    private String tournamentName;
+
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     @Basic(fetch = FetchType.LAZY)
@@ -47,8 +50,13 @@ public class ManualMatchAnalysis extends Analysis {
                 .matchDuration(matchAnalysis.getMatchInfo().getMatchDuration())
                 .redSideAnalysis(matchAnalysis.getRedSideAnalysis())
                 .blueSideAnalysis(matchAnalysis.getBlueSideAnalysis())
+                .tournamentName(matchAnalysis.getMatchInfo().getTournamentName())
                 .build();
         analysis.setUser(user);
         return analysis;
+    }
+
+    public ReducedAnalysisDto toReducedDto() {
+        return ReducedAnalysisDto.from(this);
     }
 }

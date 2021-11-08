@@ -11,6 +11,7 @@ import com.leviatan.backend.model.manual_analysis.ManualMatchAnalysis;
 import com.leviatan.backend.model.pagination.AnalysisType;
 import com.leviatan.backend.model.pagination.AnalysisSort;
 import com.leviatan.backend.service.MatchAnalysisService;
+import com.leviatan.backend.service.ReducedAnalysisDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -63,7 +64,7 @@ public class MatchAnalysisController {
     }
 
     @GetMapping("/all")
-    public Page<Analysis> getAll(
+    public Page<ReducedAnalysisDto> getAll(
             @RequestParam(value = "size", required = false) Optional<Integer> size,
             @RequestParam(value = "page", required = false) Optional<Integer> page,
             @RequestParam(value = "direction", required = false) Optional<Sort.Direction> direction,
@@ -71,10 +72,10 @@ public class MatchAnalysisController {
             @RequestParam(value = "analysisType", required = false) Optional<AnalysisType> analysisInclude
     ) {
         MatchPaginationDto params = MatchPaginationDto.builder()
-                .size(size.orElse(20))
+                .size(size.orElse(1000000000))
                 .page(page.orElse(0))
                 .direction(direction.orElse(Sort.Direction.DESC))
-                .property(property.orElse(AnalysisSort.ID))
+                .property(property.orElse(AnalysisSort.ANALYSIS_DATE))
                 .analysisType(analysisInclude.orElse(AnalysisType.ALL))
                 .build();
         return matchAnalysisService.getAllAnalysesPaginated(params);

@@ -8,6 +8,7 @@ import com.leviatan.backend.model.User;
 import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.analysis.metadata.event.EventInfo;
 import com.leviatan.backend.model.analysis.position.MatchFrameInfo;
+import com.leviatan.backend.service.ReducedAnalysisDto;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -66,5 +67,10 @@ public class MatchAnalysis extends Analysis {
                 .build();
         analysis.setUser(user);
         return analysis;
+    }
+
+    @Override
+    public ReducedAnalysisDto toReducedDto() {
+        return ReducedAnalysisDto.from(this);
     }
 }

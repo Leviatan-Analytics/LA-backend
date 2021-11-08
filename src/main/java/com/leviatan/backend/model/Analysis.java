@@ -1,6 +1,7 @@
 package com.leviatan.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.leviatan.backend.service.ReducedAnalysisDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,4 +27,6 @@ public abstract class Analysis extends UUIDEntity{
     private String matchId;
 
     private Long matchDuration;
+
+    public abstract ReducedAnalysisDto toReducedDto();
 }

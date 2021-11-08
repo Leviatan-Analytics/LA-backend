@@ -10,4 +10,5 @@ public class MatchInfoDto {
     private String matchId;
     private LocalDateTime matchDate;
     private Long matchDuration;
+    private String tournamentName;
 }

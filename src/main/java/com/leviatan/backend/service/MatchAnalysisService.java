@@ -75,7 +75,7 @@ public class MatchAnalysisService {
         return manualMatchAnalysisRepository.findAllByUser_Id(sessionUtils.getLoggedUserInfo().getId());
     }
 
-    public Page<Analysis> getAllAnalysesPaginated(MatchPaginationDto params) {
+    public Page<ReducedAnalysisDto> getAllAnalysesPaginated(MatchPaginationDto params) {
         final User loggedUser = sessionUtils.getLoggedUserInfo();
         final List<String> orderList = ANALYSIS_SORT_PROPERTIES.get(params.getProperty());
 
@@ -85,12 +85,12 @@ public class MatchAnalysisService {
                 Sort.by(getOrderList(params.getDirection(), orderList)));
 
         if (params.getAnalysisType().equals(AnalysisType.ALL)){
-            return analysisRepository.findAllAnalysesPaginated(loggedUser.getId(), pageRequest);
+            return analysisRepository.findAllAnalysesPaginated(loggedUser.getId(), pageRequest).map(Analysis::toReducedDto);
         } else {
             return analysisRepository.findAnalysesPaginated(
                     loggedUser.getId(),
                     params.getAnalysisType().equals(AnalysisType.MANUAL_ANALYSIS) ? "ManualMatchAnalysis" : "MatchAnalysis",
-                    pageRequest);
+                    pageRequest).map(Analysis::toReducedDto);
         }
     }
 
