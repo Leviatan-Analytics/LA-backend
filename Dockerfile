@@ -4,12 +4,12 @@ COPY pom.xml /build/
 COPY src /build/src/
 
 WORKDIR /build/
-RUN mvn package
+RUN mvn package -DskipTests
 
 FROM openjdk:11-jre-slim
 
 WORKDIR /app
 
-COPY --from=MAVEN_BUILD /build/target/spring-boot-application.jar /app/
+COPY --from=MAVEN_BUILD /build/target/LA-backend-0.0.1.jar /app/
 
-ENTRYPOINT ["java", "-jar", "spring-boot-application.jar"]
+ENTRYPOINT ["java", "-jar", "LA-backend-0.0.1.jar"]
