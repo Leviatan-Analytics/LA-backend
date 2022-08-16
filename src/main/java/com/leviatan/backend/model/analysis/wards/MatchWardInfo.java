@@ -1,6 +1,6 @@
 package com.leviatan.backend.model.analysis.wards;
 
-import com.leviatan.backend.model.analysis.Team;
+import com.leviatan.backend.model.league.Team;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

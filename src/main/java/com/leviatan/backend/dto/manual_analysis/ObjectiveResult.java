@@ -1,6 +1,6 @@
 package com.leviatan.backend.dto.manual_analysis;
 
-import com.leviatan.backend.model.analysis.Team;
+import com.leviatan.backend.model.league.Team;
 import com.leviatan.backend.model.manual_analysis.objectives.PushStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;

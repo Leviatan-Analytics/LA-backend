@@ -1,6 +1,6 @@
 package com.leviatan.backend.model.analysis.metadata;
 
-import com.leviatan.backend.model.analysis.Team;
+import com.leviatan.backend.model.league.Team;
 import lombok.*;
 
 import java.io.Serializable;
