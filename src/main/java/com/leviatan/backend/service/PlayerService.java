@@ -43,7 +43,7 @@ public class PlayerService {
             played.stream().filter(p -> {
                 if(position != null && !position.equals(p.getPosition().toString())) return false;
                 if(team != null && !team.equals(p.getTeam().toString())) return false;
-                return true;
+                return champion == null || champion.equals(p.getChampion().getName());
             }).collect(Collectors.toList())
         );
     }
