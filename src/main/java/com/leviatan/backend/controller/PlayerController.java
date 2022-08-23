@@ -33,4 +33,9 @@ public class PlayerController {
         return playerService.getPlayerWithMatches(playerId, position, team, champion);
     }
 
+    @GetMapping("/{playerName}/profile")
+    public Player getPlayerProfile(@PathVariable String playerName) {
+        return playerService.getPlayerProfile(playerName);
+    }
+
 }

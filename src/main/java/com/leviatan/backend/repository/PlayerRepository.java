@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface PlayerRepository extends JpaRepository<Player, String> {
     List<Player> findAllByUser_Id(String userId);
-
     Optional<Player> findByIdAndUser_Id(String id, String userId);
+    Optional<Player> findBySummonerName(String name, String userId);
 }
