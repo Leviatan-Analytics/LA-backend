@@ -9,11 +9,11 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TrackInfo {
-    private short bpmMean;
-    private List<Short> bpmList;
-    private List<Date> datePerSecond;
+    private short averageBPM;
+    private List<Short> bpmPerSecond;
+    private List<Date> timestampsPerSecond;
 }

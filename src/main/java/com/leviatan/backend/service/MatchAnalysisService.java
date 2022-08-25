@@ -10,6 +10,7 @@ import com.leviatan.backend.factory.ManualMatchAnalysisResultFactory;
 import com.leviatan.backend.model.Analysis;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.model.analysis.MatchAnalysis;
+import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.manual_analysis.ManualMatchAnalysis;
 import com.leviatan.backend.model.pagination.AnalysisType;
 import com.leviatan.backend.repository.AnalysisRepository;
@@ -53,12 +54,20 @@ public class MatchAnalysisService {
         return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user));
     }
 
+    public MatchAnalysis replaceMatchAnalysis(MatchAnalysis matchAnalysis) {
+        return matchAnalysisRepository.save(matchAnalysis);
+    }
+
     public Analysis getMatchAnalysis(String analysisId) {
         return analysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
     }
 
     public List<MatchAnalysis> getAllMatchAnalyses() {
         return matchAnalysisRepository.findAllByUser_Id(sessionUtils.getLoggedUserInfo().getId());
+    }
+
+    public MatchAnalysis getMatchAnalysisById(String matchId) {
+        return matchAnalysisRepository.findById(matchId).orElseThrow(() -> new NotFoundException("Match not found"));
     }
 
     public ManualMatchAnalysis saveManualMatchAnalysis(ManualMatchAnalysisDto matchAnalysis) {

@@ -7,17 +7,22 @@ import com.leviatan.backend.dto.manual_analysis.ManualMatchAnalysisResult;
 import com.leviatan.backend.dto.manual_analysis.ManualMatchResultRequestDto;
 import com.leviatan.backend.model.Analysis;
 import com.leviatan.backend.model.analysis.MatchAnalysis;
+import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
+import com.leviatan.backend.model.analysis.metadata.TrackInfo;
 import com.leviatan.backend.model.manual_analysis.ManualMatchAnalysis;
 import com.leviatan.backend.model.pagination.AnalysisType;
 import com.leviatan.backend.model.pagination.AnalysisSort;
 import com.leviatan.backend.service.MatchAnalysisService;
 import com.leviatan.backend.service.ReducedAnalysisDto;
+import com.leviatan.backend.utils.TCXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubtrzcinski.tcxparser.TcxParser;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +84,21 @@ public class MatchAnalysisController {
                 .analysisType(analysisInclude.orElse(AnalysisType.ALL))
                 .build();
         return matchAnalysisService.getAllAnalysesPaginated(params);
+    }
+
+    @PutMapping("/trackdata/{id}")
+    public MatchAnalysis addTcxToPlayer(String champ, File garminFile, @PathVariable String id) throws Exception {
+        TCXReader reader = new TCXReader();
+        reader.parse(garminFile);
+        TrackInfo track = new TrackInfo(reader.getBPMMean(), reader.getBPMTracklist(), reader.getTimeTracklist());
+
+        MatchAnalysis matchAnalysis = matchAnalysisService.getMatchAnalysisById(id);
+        List<PlayerMetadata> players = matchAnalysis.getPlayers();
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getChampionName().equals(champ)) players.get(i).setTrack(track);
+        }
+        matchAnalysis.setPlayers(players);
+        return matchAnalysisService.replaceMatchAnalysis(matchAnalysis);
     }
 
     @DeleteMapping("/{analysisId}")
