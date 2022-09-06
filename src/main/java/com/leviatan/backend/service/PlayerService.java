@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class PlayerService {
-
     private final PlayerRepository playerRepository;
     private final PlayedRepository playedRepository;
     private final SessionUtils sessionUtils;
@@ -49,6 +48,6 @@ public class PlayerService {
 
     public Player getPlayerProfile(String playerName) {
         User user = sessionUtils.getLoggedUserInfo();
-        return playerRepository.findBySummonerName(playerName, user.getId()).orElse(null);
+        return playerRepository.findBySummonerNameAndUser_Id(playerName, user.getId()).orElse(null);
     }
 }
