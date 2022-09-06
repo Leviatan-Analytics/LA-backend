@@ -23,12 +23,12 @@ public class RiotController {
         return riotService.getWards(matchId);
     }
 
-    @GetMapping("/{matchId}/wards")
+    @GetMapping("/{matchId}/context")
     public EventResponse getContext(@PathVariable String matchId) throws Exception {
         return riotService.getContext(matchId);
     }
 
-    @GetMapping("/{matchId}/wards")
+    @GetMapping("/{matchId}/objectives")
     public EventResponse getObjectives(@PathVariable String matchId) throws Exception {
         return riotService.getObjectives(matchId);
     }
