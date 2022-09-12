@@ -1,7 +1,7 @@
 package com.leviatan.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.leviatan.backend.service.ReducedAnalysisDto;
+import com.leviatan.backend.dto.ReducedAnalysisDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public abstract class Analysis extends UUIDEntity{
 
     @ManyToOne
-    private User user;
+    private Organization organization;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime analysisDate;

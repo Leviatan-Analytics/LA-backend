@@ -26,6 +26,6 @@ public class Match extends UUIDEntity {
     private LocalDateTime matchDate;
 
     @ManyToOne
-    private User user;
+    private Organization organization;
 
 }

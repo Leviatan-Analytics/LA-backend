@@ -34,6 +34,7 @@ public class User extends UUIDEntity{
     private String password;
 
     @ManyToOne
+    @JsonIgnore
     private Organization organization;
 
     private String leagueClientPath;

@@ -19,8 +19,11 @@ public class Note extends UUIDEntity{
     private Match match;
 
     @ManyToOne
-    private User user;
+    private User author;
 
     private String text;
+
+    @ManyToOne
+    private Organization organization;
 
 }

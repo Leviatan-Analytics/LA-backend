@@ -20,5 +20,5 @@ public class Player extends UUIDEntity {
     private String summonerName;
 
     @ManyToOne
-    private User user;
+    private Organization organization;
 }

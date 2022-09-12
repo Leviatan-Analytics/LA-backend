@@ -29,12 +29,12 @@ public class PlayerService {
 
     public List<Player> getAllPlayers() {
         User user = sessionUtils.getLoggedUserInfo();
-        return playerRepository.findAllByUser_Id(user.getId());
+        return playerRepository.findAllByOrganization_Id(user.getOrganization().getId());
     }
 
     public PlayerWithMatches getPlayerWithMatches(String playerId, String position, String team, String champion) {
         User user = sessionUtils.getLoggedUserInfo();
-        Player player = playerRepository.findByIdAndUser_Id(playerId, user.getId()).orElseThrow(() -> new NotFoundException("Player not found"));
+        Player player = playerRepository.findByIdAndOrganization_Id(playerId, user.getOrganization().getId()).orElseThrow(() -> new NotFoundException("Player not found"));
         List<Played> played = playedRepository.getAllByPlayer_Id(player.getId());
         return new PlayerWithMatches(
             player,
@@ -48,6 +48,6 @@ public class PlayerService {
 
     public Player getPlayerProfile(String playerName) {
         User user = sessionUtils.getLoggedUserInfo();
-        return playerRepository.findBySummonerNameAndUser_Id(playerName, user.getId()).orElseThrow(() -> new NotFoundException("User not found"));
+        return playerRepository.findBySummonerNameAndOrganization_Id(playerName, user.getOrganization().getId()).orElseThrow(() -> new NotFoundException("User not found"));
     }
 }

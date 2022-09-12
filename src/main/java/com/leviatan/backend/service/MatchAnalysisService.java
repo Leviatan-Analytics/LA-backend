@@ -1,6 +1,7 @@
 package com.leviatan.backend.service;
 
 import com.leviatan.backend.dto.MatchPaginationDto;
+import com.leviatan.backend.dto.ReducedAnalysisDto;
 import com.leviatan.backend.dto.manual_analysis.ManualMatchAnalysisDto;
 import com.leviatan.backend.dto.MatchAnalysisDto;
 import com.leviatan.backend.dto.manual_analysis.ManualMatchAnalysisResult;
@@ -50,7 +51,7 @@ public class MatchAnalysisService {
 
     public MatchAnalysis saveMatchAnalysis(MatchAnalysisDto matchAnalysis) {
         User user = sessionUtils.getLoggedUserInfo();
-        return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user));
+        return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user.getOrganization()));
     }
 
     public Analysis getMatchAnalysis(String analysisId) {
@@ -58,12 +59,12 @@ public class MatchAnalysisService {
     }
 
     public List<MatchAnalysis> getAllMatchAnalyses() {
-        return matchAnalysisRepository.findAllByUser_Id(sessionUtils.getLoggedUserInfo().getId());
+        return matchAnalysisRepository.findAllByOrganization_Id(sessionUtils.getLoggedUserInfo().getOrganization().getId());
     }
 
     public ManualMatchAnalysis saveManualMatchAnalysis(ManualMatchAnalysisDto matchAnalysis) {
         User user = sessionUtils.getLoggedUserInfo();
-        return manualMatchAnalysisRepository.save(ManualMatchAnalysis.from(matchAnalysis, user));
+        return manualMatchAnalysisRepository.save(ManualMatchAnalysis.from(matchAnalysis, user.getOrganization()));
     }
 
     public ManualMatchAnalysisResult getManualAnalysisResult(ManualMatchResultRequestDto requestDto) {
@@ -72,7 +73,7 @@ public class MatchAnalysisService {
     }
 
     public List<ManualMatchAnalysis> getAllManualMatchAnalyses() {
-        return manualMatchAnalysisRepository.findAllByUser_Id(sessionUtils.getLoggedUserInfo().getId());
+        return manualMatchAnalysisRepository.findAllByOrganization_Id(sessionUtils.getLoggedUserInfo().getOrganization().getId());
     }
 
     public Page<ReducedAnalysisDto> getAllAnalysesPaginated(MatchPaginationDto params) {
@@ -85,10 +86,10 @@ public class MatchAnalysisService {
                 Sort.by(getOrderList(params.getDirection(), orderList)));
 
         if (params.getAnalysisType().equals(AnalysisType.ALL)){
-            return analysisRepository.findAllAnalysesPaginated(loggedUser.getId(), pageRequest).map(Analysis::toReducedDto);
+            return analysisRepository.findAllAnalysesPaginated(loggedUser.getOrganization().getId(), pageRequest).map(Analysis::toReducedDto);
         } else {
             return analysisRepository.findAnalysesPaginated(
-                    loggedUser.getId(),
+                    loggedUser.getOrganization().getId(),
                     params.getAnalysisType().equals(AnalysisType.MANUAL_ANALYSIS) ? "ManualMatchAnalysis" : "MatchAnalysis",
                     pageRequest).map(Analysis::toReducedDto);
         }
@@ -97,7 +98,7 @@ public class MatchAnalysisService {
     @Transactional
     public void deleteMatch(String analysisId) {
         final User loggedUser = sessionUtils.getLoggedUserInfo();
-        analysisRepository.deleteAnalysisByIdAndUser_Id(analysisId, loggedUser.getId());
+        analysisRepository.deleteAnalysisByIdAndOrganization_Id(analysisId, loggedUser.getOrganization().getId());
     }
 
     private List<Sort.Order> getOrderList(Sort.Direction direction, List<String> orderList) {

@@ -5,8 +5,10 @@ import com.leviatan.backend.config.user_details.UserDetailsImpl;
 import com.leviatan.backend.dto.auth.*;
 import com.leviatan.backend.exception.BadRequestException;
 import com.leviatan.backend.exception.NotFoundException;
+import com.leviatan.backend.model.Organization;
 import com.leviatan.backend.model.SecureToken;
 import com.leviatan.backend.model.User;
+import com.leviatan.backend.repository.OrganizationRepository;
 import com.leviatan.backend.repository.SecureTokenRepository;
 import com.leviatan.backend.repository.UserRepository;
 import com.leviatan.backend.utils.EmailService;
@@ -45,14 +47,17 @@ public class AuthService {
     private final EmailService emailService;
     private final SecureTokenRepository secureTokenRepository;
 
+    private final OrganizationRepository organizationRepository;
+
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, SecureTokenRepository secureTokenRepository) {
+    public AuthService(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, SecureTokenRepository secureTokenRepository, OrganizationRepository organizationRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
         this.secureTokenRepository = secureTokenRepository;
+        this.organizationRepository = organizationRepository;
     }
 
     public LoginResponse authenticateUser(LoginRequest loginRequest) {
@@ -80,6 +85,16 @@ public class AuthService {
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .build();
 
+        user = userRepository.save(user);
+
+        Organization organization = Organization.builder()
+                .name(registerRequest.getUsername())
+                .owner(user)
+                .build();
+
+        organization = organizationRepository.save(organization);
+
+        user.setOrganization(organization);
         return userRepository.save(user);
     }
 

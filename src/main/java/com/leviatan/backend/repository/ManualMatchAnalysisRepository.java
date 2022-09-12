@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ManualMatchAnalysisRepository extends JpaRepository<ManualMatchAnalysis, String> {
-    List<ManualMatchAnalysis> findAllByUser_Id(String userId);
+    List<ManualMatchAnalysis> findAllByOrganization_Id(String organizationId);
 }

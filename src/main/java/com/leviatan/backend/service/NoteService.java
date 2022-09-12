@@ -33,7 +33,8 @@ public class NoteService {
         Match match = matchRepository.getById(matchId);
 
         Note note = new Note();
-        note.setUser(user);
+        note.setOrganization(user.getOrganization());
+        note.setAuthor(user);
         note.setMatch(match);
         note.setText(text);
 
@@ -61,6 +62,6 @@ public class NoteService {
     public List<Note> getNotesFromMatch(String matchId) {
         User user = sessionUtils.getLoggedUserInfo();
 
-        return noteRepository.findByUserAndMatch_Id(user, matchId);
+        return noteRepository.findByOrganization_IdAndMatch_Id(user.getOrganization().getId(), matchId);
     }
 }
