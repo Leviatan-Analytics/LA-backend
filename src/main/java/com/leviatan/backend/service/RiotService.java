@@ -1,5 +1,6 @@
 package com.leviatan.backend.service;
 
+import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.model.Match;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.model.league.Region;
@@ -40,8 +41,7 @@ public class RiotService {
     public EventResponse getWards(String matchId) throws Exception {
         try {
             User user  = sessionUtils.getLoggedUserInfo();
-            Match match = matchRepository.findByIdAndUser_Id(matchId, user.getId()).orElse(null);
-            if (match == null) return null;
+            Match match = matchRepository.findByIdAndUser_Id(matchId, user.getId()).orElseThrow(() -> new NotFoundException("Match not found"));
             return getEvents(match, List.of("WARD_PLACED", "WARD_KILL"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,8 +52,7 @@ public class RiotService {
     public EventResponse getContext(String matchId) throws Exception {
         try {
             User user  = sessionUtils.getLoggedUserInfo();
-            Match match = matchRepository.findByIdAndUser_Id(matchId, user.getId()).orElse(null);
-            if (match == null) return null;
+            Match match = matchRepository.findByIdAndUser_Id(matchId, user.getId()).orElseThrow(() -> new NotFoundException("Match not found"));
             return getEvents(match, List.of("ITEM_PURCHASED", "ITEM_SOLD", "ITEM_DESTROYED", "ITEM_UNDO", "CHAMPION_KILL", "LEVEL_UP"));
         } catch (Exception e) {
             throw new Exception("League API Error");
@@ -63,8 +62,7 @@ public class RiotService {
     public EventResponse getObjectives(String matchId) throws Exception {
         try {
             User user  = sessionUtils.getLoggedUserInfo();
-            Match match = matchRepository.findByIdAndUser_Id(matchId, user.getId()).orElse(null);
-            if (match == null) return null;
+            Match match = matchRepository.findByIdAndUser_Id(matchId, user.getId()).orElseThrow(() -> new NotFoundException("Match not found"));
             return getEvents(match, List.of("TURRET_PLATE_DESTROYED", "BUILDING_KILL", "ELITE_MONSTER_KILL", "DRAGON_SOUL_GIVEN"));
         } catch (Exception e) {
             throw new Exception("League API Error");

@@ -7,9 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -22,6 +22,14 @@ public class Played extends UUIDEntity {
     private Team team;
     private Position position;
     private Champion champion;
+    private Integer gold;
+    private Integer cs;
+    private Integer vision;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    @Basic(fetch = FetchType.LAZY)
+    private Score score;
 
     @ManyToOne
     private Player player;

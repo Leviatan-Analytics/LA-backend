@@ -1,6 +1,7 @@
 package com.leviatan.backend.service;
 
 import com.leviatan.backend.dto.PlayerWithMatches;
+import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.model.Played;
 import com.leviatan.backend.model.Player;
 import com.leviatan.backend.model.User;
@@ -33,8 +34,7 @@ public class PlayerService {
 
     public PlayerWithMatches getPlayerWithMatches(String playerId, String position, String team, String champion) {
         User user = sessionUtils.getLoggedUserInfo();
-        Player player = playerRepository.findByIdAndUser_Id(playerId, user.getId()).orElse(null);
-        if (player == null) return null;
+        Player player = playerRepository.findByIdAndUser_Id(playerId, user.getId()).orElseThrow(() -> new NotFoundException("Player not found"));
         List<Played> played = playedRepository.getAllByPlayer_Id(player.getId());
         return new PlayerWithMatches(
             player,
@@ -48,6 +48,6 @@ public class PlayerService {
 
     public Player getPlayerProfile(String playerName) {
         User user = sessionUtils.getLoggedUserInfo();
-        return playerRepository.findBySummonerNameAndUser_Id(playerName, user.getId()).orElse(null);
+        return playerRepository.findBySummonerNameAndUser_Id(playerName, user.getId()).orElseThrow(() -> new NotFoundException("User not found"));
     }
 }

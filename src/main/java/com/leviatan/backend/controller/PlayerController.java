@@ -1,5 +1,6 @@
 package com.leviatan.backend.controller;
 
+import com.leviatan.backend.dto.PlayerWithMatches;
 import com.leviatan.backend.model.Player;
 import com.leviatan.backend.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerId}")
-    public Player getPlayerInfoWithMatches(
+    public PlayerWithMatches getPlayerInfoWithMatches(
             @RequestParam(required = false) String position,
             @RequestParam(required = false) String team,
             @RequestParam(required = false) String champion,

@@ -9,7 +9,10 @@ import com.leviatan.backend.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlagService {
@@ -25,6 +28,11 @@ public class FlagService {
         this.flagRepository = flagRepository;
         this.sessionUtils = sessionUtils;
         this.matchRepository = matchRepository;
+    }
+
+    public List<Match> getAllFlagged() {
+        User user = sessionUtils.getLoggedUserInfo();
+        return flagRepository.findAllByUser(user).stream().map(Flag::getMatch).collect(Collectors.toList());
     }
 
     public Flag createFlag(String matchId) {

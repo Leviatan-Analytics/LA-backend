@@ -9,6 +9,7 @@ import com.leviatan.backend.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,11 +40,11 @@ public class NoteService {
         return noteRepository.save(note);
     }
 
-    public void deleteNoteFromMatch(String matchId) {
+    public void deleteNoteFromMatch(String id, String matchId) {
         User user = sessionUtils.getLoggedUserInfo();
-        Match match = matchRepository.getById(matchId);
-
-        Optional<Note> note = noteRepository.findByUserAndMatch_Id(user, match.getId());
+        Optional<Match> match = matchRepository.findById(matchId);
+        if (user == null || match.isEmpty()) return;
+        Optional<Note> note = noteRepository.findById(id);
         note.ifPresent(noteRepository::delete);
     }
 
@@ -55,5 +56,11 @@ public class NoteService {
         noteToUpdate.setText(note);
 
         return noteRepository.save(noteToUpdate);
+    }
+
+    public List<Note> getNotesFromMatch(String matchId) {
+        User user = sessionUtils.getLoggedUserInfo();
+
+        return noteRepository.findByUserAndMatch_Id(user, matchId);
     }
 }
