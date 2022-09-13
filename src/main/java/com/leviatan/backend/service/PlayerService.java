@@ -50,4 +50,12 @@ public class PlayerService {
         User user = sessionUtils.getLoggedUserInfo();
         return playerRepository.findBySummonerNameAndOrganization_Id(playerName, user.getOrganization().getId()).orElseThrow(() -> new NotFoundException("User not found"));
     }
+
+    public Player findBySummonerName(String summonerName) {
+        return playerRepository.findBySummonerName(summonerName).orElse(null);
+    }
+
+    public Player save(Player player) {
+        return playerRepository.save(player);
+    }
 }

@@ -10,4 +10,6 @@ public interface PlayerRepository extends JpaRepository<Player, String> {
     List<Player> findAllByOrganization_Id(String organizationId);
     Optional<Player> findByIdAndOrganization_Id(String id, String organizationId);
     Optional<Player> findBySummonerNameAndOrganization_Id(String summonerName, String organizationId);
+
+    Optional<Player> findBySummonerName(String summonerName);
 }

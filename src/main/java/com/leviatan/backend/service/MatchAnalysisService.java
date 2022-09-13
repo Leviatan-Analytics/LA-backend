@@ -8,14 +8,14 @@ import com.leviatan.backend.dto.manual_analysis.ManualMatchAnalysisResult;
 import com.leviatan.backend.dto.manual_analysis.ManualMatchResultRequestDto;
 import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.factory.ManualMatchAnalysisResultFactory;
-import com.leviatan.backend.model.Analysis;
-import com.leviatan.backend.model.User;
+import com.leviatan.backend.model.*;
 import com.leviatan.backend.model.analysis.MatchAnalysis;
+import com.leviatan.backend.model.league.Champion;
+import com.leviatan.backend.model.league.Position;
+import com.leviatan.backend.model.league.Region;
 import com.leviatan.backend.model.manual_analysis.ManualMatchAnalysis;
 import com.leviatan.backend.model.pagination.AnalysisType;
-import com.leviatan.backend.repository.AnalysisRepository;
-import com.leviatan.backend.repository.ManualMatchAnalysisRepository;
-import com.leviatan.backend.repository.MatchAnalysisRepository;
+import com.leviatan.backend.repository.*;
 import com.leviatan.backend.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.leviatan.backend.utils.AnalysisUtils.ANALYSIS_SORT_PROPERTIES;
 import static org.springframework.data.domain.Sort.Direction.ASC;
@@ -40,17 +41,76 @@ public class MatchAnalysisService {
     private final SessionUtils sessionUtils;
     private final AnalysisRepository analysisRepository;
 
+    private final MatchRepository matchRepository;
+
+    private final RiotService riotService;
+
+    private final PlayerService playerService;
+
+    private final PlayedRepository playedRepository;
+
     @Autowired
-    public MatchAnalysisService(MatchAnalysisRepository matchAnalysisRepository, ManualMatchAnalysisRepository manualMatchAnalysisRepository, ManualMatchAnalysisResultFactory manualMatchAnalysisResultFactory, SessionUtils sessionUtils, AnalysisRepository analysisRepository) {
+    public MatchAnalysisService(MatchAnalysisRepository matchAnalysisRepository, ManualMatchAnalysisRepository manualMatchAnalysisRepository, ManualMatchAnalysisResultFactory manualMatchAnalysisResultFactory, SessionUtils sessionUtils, AnalysisRepository analysisRepository, MatchRepository matchRepository, RiotService riotService, PlayerService playerService, PlayedRepository playedRepository) {
         this.matchAnalysisRepository = matchAnalysisRepository;
         this.manualMatchAnalysisRepository = manualMatchAnalysisRepository;
         this.manualMatchAnalysisResultFactory = manualMatchAnalysisResultFactory;
         this.sessionUtils = sessionUtils;
         this.analysisRepository = analysisRepository;
+        this.matchRepository = matchRepository;
+        this.riotService = riotService;
+        this.playerService = playerService;
+        this.playedRepository = playedRepository;
     }
 
     public MatchAnalysis saveMatchAnalysis(MatchAnalysisDto matchAnalysis) {
         User user = sessionUtils.getLoggedUserInfo();
+        Region region = matchAnalysis.getRegion() != null ? matchAnalysis.getRegion() : Region.LAS;
+
+        Match match = Match.builder()
+                .matchId(matchAnalysis.getMatchId())
+                .matchDate(matchAnalysis.getMatchDate())
+                .duration(matchAnalysis.getMatchDuration())
+                .region(region)
+                .organization(user.getOrganization())
+                .build();
+        matchRepository.save(match);
+
+        // for each player find or create and create a new played entry
+        List<Player> players = matchAnalysis.getPlayers().stream()
+                .map(playerMeta -> {
+                    Player player = playerService.findBySummonerName(playerMeta.getSummonerName());
+                    if (player == null) {
+                        player = Player.builder()
+                                .playerId(riotService.getPlayerBySummonerName(playerMeta.getSummonerName(), region))
+                                .summonerName(playerMeta.getSummonerName())
+                                .organization(user.getOrganization())
+                                .build();
+                        player = playerService.save(player);
+                    }
+
+                    Played played = Played.builder()
+                            .player(player)
+                            .match(match)
+                            .team(playerMeta.getTeam())
+                            .champion(Champion.findByName(playerMeta.getChampionName()))
+                            .position(Position.valueOf(playerMeta.getPosition()))
+                            .cs(playerMeta.getScore().getCreepScore())
+                            .score(
+                                Score.builder()
+                                    .kills(playerMeta.getScore().getKills())
+                                    .deaths(playerMeta.getScore().getDeaths())
+                                    .assists(playerMeta.getScore().getAssists())
+                                    .build()
+                            )
+                            .build();
+                    played = playedRepository.save(played);
+
+                    return player;
+                })
+                .collect(Collectors.toList());
+
+        // save analysis data in table
+
         return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user.getOrganization()));
     }
 
@@ -58,8 +118,8 @@ public class MatchAnalysisService {
         return analysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
     }
 
-    public List<MatchAnalysis> getAllMatchAnalyses() {
-        return matchAnalysisRepository.findAllByOrganization_Id(sessionUtils.getLoggedUserInfo().getOrganization().getId());
+    public List<MatchAnalysisDto> getAllMatchAnalyses() {
+        return matchAnalysisRepository.findAllByOrganization_Id(sessionUtils.getLoggedUserInfo().getOrganization().getId()).stream().map(MatchAnalysisDto::from).collect(Collectors.toList()).subList(0, 1);
     }
 
     public ManualMatchAnalysis saveManualMatchAnalysis(ManualMatchAnalysisDto matchAnalysis) {

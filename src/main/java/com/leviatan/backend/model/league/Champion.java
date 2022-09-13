@@ -197,4 +197,13 @@ public enum Champion {
     public String getName() {
         return name;
     }
+
+    public static Champion findByName(String name) {
+        for (Champion champion : Champion.values()) {
+            if (champion.getName().equals(name)) {
+                return champion;
+            }
+        }
+        return null;
+    }
 }

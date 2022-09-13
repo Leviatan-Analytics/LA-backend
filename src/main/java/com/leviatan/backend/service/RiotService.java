@@ -117,7 +117,7 @@ public class RiotService {
 
     private String getPlayerName(String puuid, Region region) throws Exception {
         try {
-            JSONObject player = riotSummonerV4(puuid, region);
+            JSONObject player = riotSummonerV4ByPuuid(puuid, region);
             return player.getString("name");
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,12 +125,25 @@ public class RiotService {
         }
     }
 
+    public String getPlayerBySummonerName(String summonerName, Region region){
+        try {
+            JSONObject player = riotSummonerV4BySummonerName(summonerName, region);
+            return player.getString("puuid");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private JSONObject riotMatchV5(String matchId, Region region) throws URISyntaxException, IOException, InterruptedException {
         return riotRequest("/lol/match/v5/matches/" + matchId + "/timeline", mapRiotV5ApiRegion(region));
     }
 
-    private JSONObject riotSummonerV4(String puuid, Region region) throws URISyntaxException, IOException, InterruptedException {
+    private JSONObject riotSummonerV4ByPuuid(String puuid, Region region) throws URISyntaxException, IOException, InterruptedException {
        return riotRequest("/lol/summoner/v4/summoners/by-puuid/" + puuid, mapRiotV4ApiRegion(region));
+    }
+
+    private JSONObject riotSummonerV4BySummonerName(String summonerName, Region region) throws URISyntaxException, IOException, InterruptedException {
+        return riotRequest("/lol/summoner/v4/summoners/by-name/" + summonerName, mapRiotV4ApiRegion(region));
     }
 
     private JSONObject riotRequest(String url, String region) throws URISyntaxException, IOException, InterruptedException {

@@ -1,9 +1,12 @@
 package com.leviatan.backend.controller;
 
+import com.leviatan.backend.model.league.Champion;
 import com.leviatan.backend.service.EventResponse;
 import com.leviatan.backend.service.RiotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/riot")
@@ -31,5 +34,10 @@ public class RiotController {
     @GetMapping("/{matchId}/objectives")
     public EventResponse getObjectives(@PathVariable String matchId) throws Exception {
         return riotService.getObjectives(matchId);
+    }
+
+    @GetMapping("/champions")
+    public List<Champion> getChampions() {
+        return List.of(Champion.values());
     }
 }

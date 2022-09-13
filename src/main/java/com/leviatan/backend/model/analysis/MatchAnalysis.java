@@ -27,13 +27,6 @@ public class MatchAnalysis extends Analysis {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime analysisDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime matchDate;
-
-    private String matchId;
-
-    private Long matchDuration;
-
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     @Basic(fetch = FetchType.LAZY)
@@ -57,9 +50,6 @@ public class MatchAnalysis extends Analysis {
     public static MatchAnalysis from(MatchAnalysisDto matchAnalysisDto, Organization organization) {
         MatchAnalysis analysis = MatchAnalysis.builder()
                 .analysisDate(matchAnalysisDto.getAnalysisDate())
-                .matchDate(matchAnalysisDto.getMatchDate())
-                .matchId(matchAnalysisDto.getMatchId())
-                .matchDuration(matchAnalysisDto.getMatchDuration())
                 .players(matchAnalysisDto.getPlayers())
                 .frames(matchAnalysisDto.getFrames())
                 .events(matchAnalysisDto.getEvents())

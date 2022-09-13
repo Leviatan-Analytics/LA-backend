@@ -2,10 +2,7 @@ package com.leviatan.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leviatan.backend.model.league.Region;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Match extends UUIDEntity {
 
     private String matchId;

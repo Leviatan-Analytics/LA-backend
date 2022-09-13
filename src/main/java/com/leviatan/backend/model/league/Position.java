@@ -1,9 +1,9 @@
 package com.leviatan.backend.model.league;
 
 public enum Position {
-    ADC,
-    SUPPORT,
-    MID,
+    BOTTOM,
+    UTILITY,
+    MIDDLE,
     TOP,
     JUNGLE
 }

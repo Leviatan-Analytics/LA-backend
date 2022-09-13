@@ -3,10 +3,7 @@ package com.leviatan.backend.model;
 import com.leviatan.backend.model.league.Champion;
 import com.leviatan.backend.model.league.Position;
 import com.leviatan.backend.model.league.Team;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -17,6 +14,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Played extends UUIDEntity {
 
     private Team team;
