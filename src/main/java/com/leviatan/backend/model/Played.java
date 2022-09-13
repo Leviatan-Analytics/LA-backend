@@ -1,5 +1,6 @@
 package com.leviatan.backend.model;
 
+import com.leviatan.backend.model.analysis.metadata.TrackInfo;
 import com.leviatan.backend.model.league.Champion;
 import com.leviatan.backend.model.league.Position;
 import com.leviatan.backend.model.league.Team;
@@ -22,7 +23,12 @@ public class Played extends UUIDEntity {
     private Champion champion;
     private Integer gold;
     private Integer cs;
-    private Integer vision;
+    private Double vision;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    @Basic(fetch = FetchType.LAZY)
+    private TrackInfo trackInfo;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")

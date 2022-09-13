@@ -20,5 +20,4 @@ public class PlayerMetadata implements Serializable {
     private ScoreInfo score;
     private String summonerName;
     private SpellInfo spells;
-    private TrackInfo track;
 }

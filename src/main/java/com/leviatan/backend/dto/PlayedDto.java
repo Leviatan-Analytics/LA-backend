@@ -21,7 +21,7 @@ public class PlayedDto {
     private Champion champion;
     private Integer gold;
     private Integer cs;
-    private Integer vision;
+    private Double vision;
     private Score score;
     private MatchDto match;
 

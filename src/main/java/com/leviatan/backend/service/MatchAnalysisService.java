@@ -93,8 +93,9 @@ public class MatchAnalysisService {
                             .match(match)
                             .team(playerMeta.getTeam())
                             .champion(Champion.findByName(playerMeta.getChampionName()))
-                            .position(Position.valueOf(playerMeta.getPosition()))
+                            .position(playerMeta.getPosition() != null ? Position.valueOf(playerMeta.getPosition()) : null)
                             .cs(playerMeta.getScore().getCreepScore())
+                            .vision(playerMeta.getScore().getWardScore())
                             .score(
                                 Score.builder()
                                     .kills(playerMeta.getScore().getKills())
