@@ -1,6 +1,7 @@
 package com.leviatan.backend.service;
 
 import com.leviatan.backend.dto.PlayerWithMatches;
+import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.model.Played;
 import com.leviatan.backend.model.Player;
 import com.leviatan.backend.model.User;
@@ -15,9 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PlayerService {
-
     private final PlayerRepository playerRepository;
-
     private final PlayedRepository playedRepository;
     private final SessionUtils sessionUtils;
 
@@ -30,21 +29,33 @@ public class PlayerService {
 
     public List<Player> getAllPlayers() {
         User user = sessionUtils.getLoggedUserInfo();
-        return playerRepository.findAllByUser_Id(user.getId());
+        return playerRepository.findAllByOrganization_Id(user.getOrganization().getId());
     }
 
     public PlayerWithMatches getPlayerWithMatches(String playerId, String position, String team, String champion) {
         User user = sessionUtils.getLoggedUserInfo();
-        Player player = playerRepository.findByIdAndUser_Id(playerId, user.getId()).orElse(null);
-        if (player == null) return null;
+        Player player = playerRepository.findByIdAndOrganization_Id(playerId, user.getOrganization().getId()).orElseThrow(() -> new NotFoundException("Player not found"));
         List<Played> played = playedRepository.getAllByPlayer_Id(player.getId());
         return new PlayerWithMatches(
             player,
             played.stream().filter(p -> {
                 if(position != null && !position.equals(p.getPosition().toString())) return false;
                 if(team != null && !team.equals(p.getTeam().toString())) return false;
-                return true;
+                return champion == null || champion.equals(p.getChampion().getName());
             }).collect(Collectors.toList())
         );
+    }
+
+    public Player getPlayerProfile(String playerName) {
+        User user = sessionUtils.getLoggedUserInfo();
+        return playerRepository.findBySummonerNameAndOrganization_Id(playerName, user.getOrganization().getId()).orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
+    public Player findBySummonerName(String summonerName) {
+        return playerRepository.findBySummonerName(summonerName).orElse(null);
+    }
+
+    public Player save(Player player) {
+        return playerRepository.save(player);
     }
 }

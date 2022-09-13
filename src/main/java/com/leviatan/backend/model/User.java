@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -31,6 +32,10 @@ public class User extends UUIDEntity{
     @NotBlank
     @Size(max = 120)
     private String password;
+
+    @ManyToOne
+    @JsonIgnore
+    private Organization organization;
 
     private String leagueClientPath;
 

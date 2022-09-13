@@ -11,14 +11,14 @@ import javax.transaction.Transactional;
 
 public interface AnalysisRepository extends JpaRepository<Analysis, String> {
 
-    @Query(nativeQuery = true, value = "select * from analysis a where a.user_id = ?1")
-    Page<Analysis> findAllAnalysesPaginated(String userId, Pageable pageable);
+    @Query(nativeQuery = true, value = "select * from analysis a where a.organization_id = ?1")
+    Page<Analysis> findAllAnalysesPaginated(String organizationId, Pageable pageable);
 
-    @Query(nativeQuery = true, value = "select * from analysis a where a.user_id = ?1 and a.dtype = ?2")
-    Page<Analysis> findAnalysesPaginated(String userId, String analysisType, Pageable pageable);
+    @Query(nativeQuery = true, value = "select * from analysis a where a.organization_id = ?1 and a.dtype = ?2")
+    Page<Analysis> findAnalysesPaginated(String organizationId, String analysisType, Pageable pageable);
 
     @Transactional
     @Modifying
-    @Query("delete from Analysis a where a.id = ?1 and a.user.id = ?2")
-    void deleteAnalysisByIdAndUser_Id(String analysisId, String userId);
+    @Query("delete from Analysis a where a.id = ?1 and a.organization.id = ?2")
+    void deleteAnalysisByIdAndOrganization_Id(String analysisId, String organizationId);
 }

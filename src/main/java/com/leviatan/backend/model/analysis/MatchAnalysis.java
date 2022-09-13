@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leviatan.backend.dto.MatchAnalysisDto;
 import com.leviatan.backend.dto.PlayerFrameMetadata;
 import com.leviatan.backend.model.Analysis;
-import com.leviatan.backend.model.User;
+import com.leviatan.backend.model.Organization;
 import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.analysis.metadata.event.EventInfo;
 import com.leviatan.backend.model.analysis.position.MatchFrameInfo;
-import com.leviatan.backend.service.ReducedAnalysisDto;
+import com.leviatan.backend.dto.ReducedAnalysisDto;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -26,13 +26,6 @@ public class MatchAnalysis extends Analysis {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime analysisDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime matchDate;
-
-    private String matchId;
-
-    private Long matchDuration;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
@@ -54,18 +47,15 @@ public class MatchAnalysis extends Analysis {
     @Basic(fetch = FetchType.LAZY)
     private List<PlayerFrameMetadata> framesMetadata;
 
-    public static MatchAnalysis from(MatchAnalysisDto matchAnalysisDto, User user) {
+    public static MatchAnalysis from(MatchAnalysisDto matchAnalysisDto, Organization organization) {
         MatchAnalysis analysis = MatchAnalysis.builder()
                 .analysisDate(matchAnalysisDto.getAnalysisDate())
-                .matchDate(matchAnalysisDto.getMatchDate())
-                .matchId(matchAnalysisDto.getMatchId())
-                .matchDuration(matchAnalysisDto.getMatchDuration())
                 .players(matchAnalysisDto.getPlayers())
                 .frames(matchAnalysisDto.getFrames())
                 .events(matchAnalysisDto.getEvents())
                 .framesMetadata(matchAnalysisDto.getFramesMetadata())
                 .build();
-        analysis.setUser(user);
+        analysis.setOrganization(organization);
         return analysis;
     }
 

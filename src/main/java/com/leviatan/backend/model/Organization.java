@@ -11,12 +11,11 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Player extends UUIDEntity {
+public class Organization extends UUIDEntity {
 
-    private String playerId;
-
-    private String summonerName;
+    private String name;
 
     @ManyToOne
-    private Organization organization;
+    private User owner;
+
 }

@@ -1,4 +1,4 @@
-package com.leviatan.backend.service;
+package com.leviatan.backend.dto;
 
 import com.leviatan.backend.model.analysis.MatchAnalysis;
 import com.leviatan.backend.model.manual_analysis.ManualMatchAnalysis;
