@@ -118,8 +118,8 @@ public class MatchAnalysisService {
         return analysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
     }
 
-    public List<MatchAnalysisDto> getAllMatchAnalyses() {
-        return matchAnalysisRepository.findAllByOrganization_Id(sessionUtils.getLoggedUserInfo().getOrganization().getId()).stream().map(MatchAnalysisDto::from).collect(Collectors.toList()).subList(0, 1);
+    public List<MatchAnalysis> getAllMatchAnalyses() {
+        return matchAnalysisRepository.findAllByOrganization_Id(sessionUtils.getLoggedUserInfo().getOrganization().getId());
     }
 
     public ManualMatchAnalysis saveManualMatchAnalysis(ManualMatchAnalysisDto matchAnalysis) {

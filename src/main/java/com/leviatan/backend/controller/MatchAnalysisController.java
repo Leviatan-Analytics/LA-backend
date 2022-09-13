@@ -39,7 +39,7 @@ public class MatchAnalysisController {
     }
 
     @GetMapping
-    public List<MatchAnalysisDto> getAllMatchAnalyses() {
+    public List<MatchAnalysis> getAllMatchAnalyses() {
         return matchAnalysisService.getAllMatchAnalyses();
     }
 
