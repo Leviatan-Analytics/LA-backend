@@ -8,6 +8,12 @@
 		<version>2.5.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>https://jcenter.bintray.com/</url>
+		</repository>
+	</repositories>
 	<groupId>com.leviatan</groupId>
 	<artifactId>LA-backend</artifactId>
 	<version>0.0.1</version>
@@ -90,6 +96,11 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20220320</version>
+		</dependency>
+		<dependency>
+			<groupId>pl.jakubtrzcinski</groupId>
+			<artifactId>tcx-parser</artifactId>
+			<version>1.0.2.RELEASE</version>
 		</dependency>
 	</dependencies>
 

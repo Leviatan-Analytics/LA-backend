@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface PlayedRepository extends JpaRepository<Played, String> {
     List<Played> getAllByPlayer_Id(String playerId);
+
+    Played getByPlayer_IdAndMatch_Id(String playerId, String matchId);
 }
