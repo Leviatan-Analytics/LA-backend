@@ -55,6 +55,9 @@ public class MatchAnalysis extends Analysis {
                 .events(matchAnalysisDto.getEvents())
                 .framesMetadata(matchAnalysisDto.getFramesMetadata())
                 .build();
+        analysis.setMatchId(matchAnalysisDto.getMatchId());
+        analysis.setMatchDate(matchAnalysisDto.getMatchDate());
+        analysis.setMatchDuration(matchAnalysisDto.getMatchDuration());
         analysis.setOrganization(organization);
         return analysis;
     }
