@@ -27,7 +27,6 @@ public class Played extends UUIDEntity {
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    @Basic(fetch = FetchType.LAZY)
     private TrackInfo trackInfo;
 
     @Type(type = "jsonb")
