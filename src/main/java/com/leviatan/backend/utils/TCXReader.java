@@ -1,6 +1,7 @@
 package com.leviatan.backend.utils;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
+import org.springframework.web.multipart.MultipartFile;
 import pl.jakubtrzcinski.tcxparser.TcxParser;
 
 import java.io.File;
@@ -14,8 +15,8 @@ public class TCXReader {
     private TrainingCenterDatabaseT actualFile;
     private int size;
 
-    public void parse(File file) throws Exception {
-        actualFile = parser.parseTCX(new FileInputStream(file));
+    public void parse(MultipartFile file) throws Exception {
+        actualFile = parser.parseTCX(file.getInputStream());
         size = actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().size();
     }
 

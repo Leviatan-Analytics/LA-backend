@@ -74,7 +74,7 @@ public class MatchController {
     @PutMapping("/{matchId}/trackdata/{playerId}")
     public Played addTrackDataToMatch(@PathVariable("matchId") String matchId, @PathVariable("playerId") String playedId, @RequestParam("file") MultipartFile garminFile) throws Exception {
         TCXReader reader = new TCXReader();
-        reader.parse(garminFile.getResource().getFile());
+        reader.parse(garminFile);
         TrackInfo track = new TrackInfo(reader.getBPMMean(), reader.getBPMTracklist(), reader.getTimeTracklist());
 
         Played played = playedRepository.getByPlayer_IdAndMatch_Id(playedId, matchId);
