@@ -5,6 +5,7 @@ import com.leviatan.backend.dto.MatchAnalysisDto;
 import com.leviatan.backend.dto.PlayerFrameMetadata;
 import com.leviatan.backend.model.Analysis;
 import com.leviatan.backend.model.Organization;
+import com.leviatan.backend.model.Played;
 import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.analysis.metadata.event.EventInfo;
 import com.leviatan.backend.model.analysis.position.MatchFrameInfo;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -60,6 +62,11 @@ public class MatchAnalysis extends Analysis {
         analysis.setMatchDuration(matchAnalysisDto.getMatchDuration());
         analysis.setOrganization(organization);
         return analysis;
+    }
+
+    public static MatchAnalysis from(MatchAnalysis matchAnalysis, List<Played> played) {
+        matchAnalysis.setPlayers(played.stream().map(PlayerMetadata::from).collect(Collectors.toList()));
+        return matchAnalysis;
     }
 
     @Override

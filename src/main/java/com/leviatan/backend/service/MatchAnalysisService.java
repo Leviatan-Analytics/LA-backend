@@ -111,12 +111,15 @@ public class MatchAnalysisService {
                 .collect(Collectors.toList());
 
         // save analysis data in table
-
         return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user.getOrganization()));
     }
 
     public Analysis getMatchAnalysis(String analysisId) {
-        return analysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
+        Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
+        Match match = matchRepository.findById(analysis.getMatchId()).orElseThrow(() -> new NotFoundException("Match not found"));
+        List<Played> played = playedRepository.getAllByMatch_Id(match.getMatchId());
+
+        return MatchAnalysis.from((MatchAnalysis) analysis, played);
     }
 
     public List<MatchAnalysis> getAllMatchAnalyses() {
