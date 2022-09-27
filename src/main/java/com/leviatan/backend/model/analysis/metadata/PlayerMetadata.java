@@ -22,6 +22,7 @@ public class PlayerMetadata implements Serializable {
     private ScoreInfo score;
     private String summonerName;
     private SpellInfo spells;
+    private TrackInfo trackInfo;
 
     public static PlayerMetadata from(Played played) {
         return PlayerMetadata.builder()
@@ -31,6 +32,7 @@ public class PlayerMetadata implements Serializable {
                 .position(played.getPosition().name())
                 .score(ScoreInfo.from(played.getScore(), played.getCs(), played.getVision()))
                 .summonerName(played.getPlayer().getSummonerName())
+                .trackInfo(played.getTrackInfo())
                 .build();
     }
 }
