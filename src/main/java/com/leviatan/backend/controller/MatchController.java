@@ -61,17 +61,17 @@ public class MatchController {
     }
 
     @PutMapping("/{matchId}/note/{noteId}")
-    public Note updateNoteToMatch(@PathVariable String matchId, @PathVariable String noteId, @RequestBody String note) {
+    public Note updateNoteToMatch(@PathVariable("matchId") String matchId, @PathVariable("noteId") String noteId, @RequestBody String note) {
         return noteService.updateNoteToMatch(matchId, noteId, note);
     }
 
     @DeleteMapping("/{matchId}/note/{noteId}")
-    public void deleteNoteFromMatch(@PathVariable String noteId, @PathVariable String matchId) {
+    public void deleteNoteFromMatch(@PathVariable("matchId") String noteId, @PathVariable("noteId") String matchId) {
         noteService.deleteNoteFromMatch(noteId, matchId);
     }
 
     @PutMapping("/{matchId}/trackdata/{playerId}")
-    public Played addTrackDataToMatch(@PathVariable String matchId, @PathVariable String playedId, File garminFile) throws Exception {
+    public Played addTrackDataToMatch(@PathVariable("matchId") String matchId, @PathVariable("playerId") String playedId, File garminFile) throws Exception {
         TCXReader reader = new TCXReader();
         reader.parse(garminFile);
         TrackInfo track = new TrackInfo(reader.getBPMMean(), reader.getBPMTracklist(), reader.getTimeTracklist());
