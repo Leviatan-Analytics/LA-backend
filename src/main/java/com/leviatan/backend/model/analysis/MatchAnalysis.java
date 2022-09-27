@@ -65,8 +65,19 @@ public class MatchAnalysis extends Analysis {
     }
 
     public static MatchAnalysis from(MatchAnalysis matchAnalysis, List<Played> played) {
-        matchAnalysis.setPlayers(played.stream().map(PlayerMetadata::from).collect(Collectors.toList()));
-        return matchAnalysis;
+        MatchAnalysis analysis = MatchAnalysis.builder()
+                .analysisDate(matchAnalysis.getAnalysisDate())
+                .players(matchAnalysis.getPlayers())
+                .frames(matchAnalysis.getFrames())
+                .events(matchAnalysis.getEvents())
+                .framesMetadata(matchAnalysis.getFramesMetadata())
+                .build();
+        analysis.setMatchId(matchAnalysis.getMatchId());
+        analysis.setMatchDate(matchAnalysis.getMatchDate());
+        analysis.setMatchDuration(matchAnalysis.getMatchDuration());
+        analysis.setOrganization(matchAnalysis.getOrganization());
+        analysis.setPlayers(played.stream().map(PlayerMetadata::from).collect(Collectors.toList()));
+        return analysis;
     }
 
     @Override

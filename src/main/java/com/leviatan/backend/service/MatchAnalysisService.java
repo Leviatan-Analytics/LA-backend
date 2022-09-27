@@ -116,8 +116,7 @@ public class MatchAnalysisService {
 
     public Analysis getMatchAnalysis(String analysisId) {
         Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new NotFoundException("Analysis not found"));
-        Match match = matchRepository.findById(analysis.getMatchId()).orElseThrow(() -> new NotFoundException("Match not found"));
-        List<Played> played = playedRepository.getAllByMatch_Id(match.getMatchId());
+        List<Played> played = playedRepository.getAllByMatch_Id(analysis.getMatchId());
 
         return MatchAnalysis.from((MatchAnalysis) analysis, played);
     }
