@@ -79,6 +79,7 @@ public class MatchController {
 
         Played played = playedRepository.getByPlayer_IdAndMatch_Id(playedId, matchId);
         played.setTrackInfo(track);
-        return playedRepository.save(played);
+        played = playedRepository.save(played);
+        return played;
     }
 }
