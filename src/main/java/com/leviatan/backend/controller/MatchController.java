@@ -13,6 +13,7 @@ import com.leviatan.backend.service.NoteService;
 import com.leviatan.backend.utils.TCXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
@@ -71,9 +72,9 @@ public class MatchController {
     }
 
     @PutMapping("/{matchId}/trackdata/{playerId}")
-    public Played addTrackDataToMatch(@PathVariable("matchId") String matchId, @PathVariable("playerId") String playedId, File garminFile) throws Exception {
+    public Played addTrackDataToMatch(@PathVariable("matchId") String matchId, @PathVariable("playerId") String playedId, @RequestParam("file") MultipartFile garminFile) throws Exception {
         TCXReader reader = new TCXReader();
-        reader.parse(garminFile);
+        reader.parse(garminFile.getResource().getFile());
         TrackInfo track = new TrackInfo(reader.getBPMMean(), reader.getBPMTracklist(), reader.getTimeTracklist());
 
         Played played = playedRepository.getByPlayer_IdAndMatch_Id(playedId, matchId);
