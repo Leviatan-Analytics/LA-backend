@@ -25,9 +25,9 @@ public class TCXReader {
 
     public List<TrackFrame> getTracklist() {
         List<TrackFrame> frames = new ArrayList<>();
-        Date zero = actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(0).getTime().toGregorianCalendar().getTime();
+        long zero = actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(0).getTime().toGregorianCalendar().getTimeInMillis();
         for (int i = 0; i < size; i++) {
-            int diff = actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(i).getTime().toGregorianCalendar().getTime().getSeconds() - zero.getSeconds();
+            long diff = actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(i).getTime().toGregorianCalendar().getTimeInMillis() - zero;
             frames.add(new TrackFrame(diff, actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(i).getHeartRateBpm().getValue()));
         }
         return frames;

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TrackFrame {
-    private int time;
+    private long time;
     private int bpm;
 }
