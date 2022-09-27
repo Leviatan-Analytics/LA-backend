@@ -1,11 +1,10 @@
 package com.leviatan.backend.utils;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
+import com.leviatan.backend.model.analysis.metadata.TrackFrame;
 import org.springframework.web.multipart.MultipartFile;
 import pl.jakubtrzcinski.tcxparser.TcxParser;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,19 +23,13 @@ public class TCXReader {
         return actualFile.getActivities().getActivity().get(0).getLap().get(0).getAverageHeartRateBpm().getValue();
     }
 
-    public List<Short> getBPMTracklist() {
-        List<Short> bpmList = new ArrayList<>();
+    public List<TrackFrame> getTracklist() {
+        List<TrackFrame> frames = new ArrayList<>();
+        Date zero = actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(0).getTime().toGregorianCalendar().getTime();
         for (int i = 0; i < size; i++) {
-            bpmList.add(actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(i).getHeartRateBpm().getValue());
+            int diff = actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(i).getTime().toGregorianCalendar().getTime().getSeconds() - zero.getSeconds();
+            frames.add(new TrackFrame(diff, actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(i).getHeartRateBpm().getValue()));
         }
-        return bpmList;
-    }
-
-    public List<Date> getTimeTracklist() {
-        List<Date> dateList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            dateList.add(actualFile.getActivities().getActivity().get(0).getLap().get(0).getTrack().get(0).getTrackpoint().get(i).getTime().toGregorianCalendar().getTime());
-        }
-        return dateList;
+        return frames;
     }
 }
