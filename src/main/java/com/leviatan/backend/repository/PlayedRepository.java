@@ -1,8 +1,6 @@
 package com.leviatan.backend.repository;
 
 import com.leviatan.backend.model.Played;
-import com.leviatan.backend.model.league.Position;
-import com.leviatan.backend.model.league.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
