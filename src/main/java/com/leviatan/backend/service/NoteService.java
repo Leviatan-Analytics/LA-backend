@@ -44,8 +44,7 @@ public class NoteService {
         note.setAuthor(user);
         note.setMatch(match);
         fillNoteWithDto(noteDto, note);
-        Note savedNote = noteRepository.save(note);
-        return savedNote.toDto();
+        return noteRepository.save(note).toDto();
     }
 
     public void deleteNoteFromMatch(String id) {
@@ -53,12 +52,12 @@ public class NoteService {
         note.ifPresent(noteRepository::delete);
     }
 
-    public Note updateNoteToMatch(String noteId, NoteDto noteDto) {
+    public NoteDto updateNoteToMatch(String noteId, NoteDto noteDto) {
         Note noteToUpdate = noteRepository
                 .findById(noteId)
                 .orElseThrow(() -> new NotFoundException("Note not found"));
         fillNoteWithDto(noteDto, noteToUpdate);
-        return noteRepository.save(noteToUpdate);
+        return noteRepository.save(noteToUpdate).toDto();
     }
 
     private void fillNoteWithDto(NoteDto noteDto, Note note) {

@@ -60,7 +60,7 @@ public class MatchController {
     }
 
     @PutMapping("/{matchId}/note/{noteId}")
-    public Note updateNoteToMatch(@PathVariable("noteId") String noteId, @RequestBody NoteDto note) {
+    public NoteDto updateNoteToMatch(@PathVariable("noteId") String noteId, @RequestBody NoteDto note) {
         return noteService.updateNoteToMatch(noteId, note);
     }
 
