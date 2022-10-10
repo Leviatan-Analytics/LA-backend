@@ -1,11 +1,10 @@
 package com.leviatan.backend.controller;
 
+import com.leviatan.backend.dto.NoteDto;
 import com.leviatan.backend.model.Flag;
 import com.leviatan.backend.model.Match;
 import com.leviatan.backend.model.Note;
 import com.leviatan.backend.model.Played;
-import com.leviatan.backend.model.analysis.MatchAnalysis;
-import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.analysis.metadata.TrackInfo;
 import com.leviatan.backend.repository.PlayedRepository;
 import com.leviatan.backend.service.FlagService;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 @RestController
@@ -57,18 +55,18 @@ public class MatchController {
     }
 
     @PostMapping("/{matchId}/note")
-    public Note addNoteToMatch(@PathVariable String matchId, @RequestBody String note) {
+    public NoteDto addNoteToMatch(@PathVariable String matchId, @RequestBody NoteDto note) {
         return noteService.addNoteToMatch(matchId, note);
     }
 
     @PutMapping("/{matchId}/note/{noteId}")
-    public Note updateNoteToMatch(@PathVariable("matchId") String matchId, @PathVariable("noteId") String noteId, @RequestBody String note) {
-        return noteService.updateNoteToMatch(matchId, noteId, note);
+    public NoteDto updateNoteToMatch(@PathVariable("noteId") String noteId, @RequestBody NoteDto note) {
+        return noteService.updateNoteToMatch(noteId, note);
     }
 
     @DeleteMapping("/{matchId}/note/{noteId}")
-    public void deleteNoteFromMatch(@PathVariable("matchId") String noteId, @PathVariable("noteId") String matchId) {
-        noteService.deleteNoteFromMatch(noteId, matchId);
+    public void deleteNoteFromMatch(@PathVariable("noteId") String noteId) {
+        noteService.deleteNoteFromMatch(noteId);
     }
 
     @PutMapping("/{matchId}/trackdata/{playerId}")

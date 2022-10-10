@@ -1,10 +1,14 @@
 package com.leviatan.backend.service;
 
+import com.leviatan.backend.dto.NoteDto;
+import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.model.Match;
 import com.leviatan.backend.model.Note;
+import com.leviatan.backend.model.Player;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.repository.MatchRepository;
 import com.leviatan.backend.repository.NoteRepository;
+import com.leviatan.backend.repository.PlayerRepository;
 import com.leviatan.backend.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +25,17 @@ public class NoteService {
 
     private final MatchRepository matchRepository;
 
+    private final PlayerRepository playerRepository;
+
     @Autowired
-    public NoteService(NoteRepository noteRepository, SessionUtils sessionUtils, MatchRepository matchRepository) {
+    public NoteService(NoteRepository noteRepository, SessionUtils sessionUtils, MatchRepository matchRepository, PlayerRepository playerRepository) {
         this.noteRepository = noteRepository;
         this.sessionUtils = sessionUtils;
         this.matchRepository = matchRepository;
+        this.playerRepository = playerRepository;
     }
 
-    public Note addNoteToMatch(String matchId, String text) {
+    public NoteDto addNoteToMatch(String matchId, NoteDto noteDto) {
         User user = sessionUtils.getLoggedUserInfo();
         Match match = matchRepository.getById(matchId);
 
@@ -36,27 +43,39 @@ public class NoteService {
         note.setOrganization(user.getOrganization());
         note.setAuthor(user);
         note.setMatch(match);
-        note.setText(text);
-
-        return noteRepository.save(note);
+        fillNoteWithDto(noteDto, note);
+        return noteRepository.save(note).toDto();
     }
 
-    public void deleteNoteFromMatch(String id, String matchId) {
-        User user = sessionUtils.getLoggedUserInfo();
-        Optional<Match> match = matchRepository.findById(matchId);
-        if (user == null || match.isEmpty()) return;
+    public void deleteNoteFromMatch(String id) {
         Optional<Note> note = noteRepository.findById(id);
         note.ifPresent(noteRepository::delete);
     }
 
-    public Note updateNoteToMatch(String matchId, String noteId, String note) {
-        User user = sessionUtils.getLoggedUserInfo();
-        Match match = matchRepository.getById(matchId);
+    public NoteDto updateNoteToMatch(String noteId, NoteDto noteDto) {
+        Note noteToUpdate = noteRepository
+                .findById(noteId)
+                .orElseThrow(() -> new NotFoundException("Note not found"));
+        fillNoteWithDto(noteDto, noteToUpdate);
+        return noteRepository.save(noteToUpdate).toDto();
+    }
 
-        Note noteToUpdate = noteRepository.getById(noteId);
-        noteToUpdate.setText(note);
+    private void fillNoteWithDto(NoteDto noteDto, Note note) {
+        note.setTopic(noteDto.getTopic());
+        note.setContent(noteDto.getContent());
+        note.setRelatedChampions(noteDto.getRelatedChampions());
+        note.setTeam(noteDto.getTeam());
+        note.setTeam(noteDto.getTeam());
 
-        return noteRepository.save(noteToUpdate);
+        Player player = playerRepository
+                .findBySummonerName(noteDto.getSummoner())
+                .orElseThrow(() -> new NotFoundException("Player not found"));
+        note.setPlayer(player);
+
+        note.setTimestamp(noteDto.getTimestamp());
+        note.setIncludesWards(noteDto.getIncludesWards());
+        note.setX(noteDto.getX());
+        note.setY(noteDto.getY());
     }
 
     public List<Note> getNotesFromMatch(String matchId) {
