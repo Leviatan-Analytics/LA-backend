@@ -6,6 +6,7 @@ import com.leviatan.backend.model.Match;
 import com.leviatan.backend.model.Note;
 import com.leviatan.backend.model.Player;
 import com.leviatan.backend.model.User;
+import com.leviatan.backend.model.league.Champion;
 import com.leviatan.backend.repository.MatchRepository;
 import com.leviatan.backend.repository.NoteRepository;
 import com.leviatan.backend.repository.PlayerRepository;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteService {
@@ -63,14 +66,22 @@ public class NoteService {
     private void fillNoteWithDto(NoteDto noteDto, Note note) {
         note.setTopic(noteDto.getTopic());
         note.setContent(noteDto.getContent());
-        note.setRelatedChampions(noteDto.getRelatedChampions());
+        note.setRelatedChampions(
+                noteDto.getRelatedChampions().stream()
+                        .map(Champion::findByName)
+                        .collect(Collectors.toList())
+        );
         note.setTeam(noteDto.getTeam());
-        note.setTeam(noteDto.getTeam());
+        note.setSide(noteDto.getSide());
 
-        Player player = playerRepository
-                .findBySummonerName(noteDto.getSummoner())
-                .orElseThrow(() -> new NotFoundException("Player not found"));
-        note.setPlayer(player);
+        if(noteDto.getSummoner() != null) {
+            Player player = playerRepository
+                    .findBySummonerName(noteDto.getSummoner())
+                    .orElse(null);
+            note.setPlayer(player);
+        } else {
+            note.setPlayer(null);
+        }
 
         note.setTimestamp(noteDto.getTimestamp());
         note.setIncludesWards(noteDto.getIncludesWards());
@@ -78,9 +89,33 @@ public class NoteService {
         note.setY(noteDto.getY());
     }
 
-    public List<Note> getNotesFromMatch(String matchId) {
+    public List<NoteDto> getNotesFromMatch(String matchId) {
         User user = sessionUtils.getLoggedUserInfo();
 
-        return noteRepository.findByOrganization_IdAndMatch_Id(user.getOrganization().getId(), matchId);
+        return noteRepository
+                .findByOrganization_IdAndMatch_Id(user.getOrganization().getId(), matchId)
+                .stream()
+                .map(Note::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<NoteDto> getNotes() {
+        return noteRepository.findAll().stream().map(Note::toDto).collect(Collectors.toList());
+    }
+
+    public List<String> getNoteTopics() {
+        return noteRepository.findAll().stream()
+                .map(Note::getTopic)
+                .distinct()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getNoteTeams() {
+        return noteRepository.findAll().stream()
+                .map(Note::getTeam)
+                .distinct()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 }

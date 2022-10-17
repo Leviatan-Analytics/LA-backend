@@ -11,6 +11,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -54,12 +55,17 @@ public class Note extends UUIDEntity{
 
     public NoteDto toDto() {
         return NoteDto.builder()
+                .id(this.getId())
                 .topic(topic)
                 .content(content)
-                .relatedChampions(relatedChampions)
+                .relatedChampions(
+                        relatedChampions.stream()
+                                .map(Champion::getName)
+                                .collect(Collectors.toList())
+                )
                 .side(side)
                 .team(team)
-                .summoner(player.getSummonerName())
+                .summoner(player != null ? player.getSummonerName() : null)
                 .timestamp(timestamp)
                 .includesWards(includesWards)
                 .x(x)

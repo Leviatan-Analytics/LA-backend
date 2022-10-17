@@ -1,6 +1,5 @@
 package com.leviatan.backend.dto;
 
-import com.leviatan.backend.model.league.Champion;
 import com.leviatan.backend.model.league.Team;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,11 +14,13 @@ import java.util.List;
 @Builder
 public class NoteDto {
 
+    private String id;
+
     private String topic;
 
     private String content;
 
-    private List<Champion> relatedChampions;
+    private List<String> relatedChampions;
 
     private Team side;
 
