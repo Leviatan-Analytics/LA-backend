@@ -16,6 +16,8 @@ public class NoteDto {
 
     private String id;
 
+    private String matchId;
+
     private String topic;
 
     private String content;

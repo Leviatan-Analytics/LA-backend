@@ -58,6 +58,7 @@ public class Note extends UUIDEntity{
     public NoteDto toDto() {
         return NoteDto.builder()
                 .id(this.getId())
+                .matchId(this.getMatch().getId())
                 .topic(topic)
                 .content(content)
                 .relatedChampions(
