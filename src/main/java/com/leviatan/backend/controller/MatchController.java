@@ -3,7 +3,6 @@ package com.leviatan.backend.controller;
 import com.leviatan.backend.dto.NoteDto;
 import com.leviatan.backend.model.Flag;
 import com.leviatan.backend.model.Match;
-import com.leviatan.backend.model.Note;
 import com.leviatan.backend.model.Played;
 import com.leviatan.backend.model.analysis.metadata.TrackInfo;
 import com.leviatan.backend.repository.PlayedRepository;
@@ -50,7 +49,7 @@ public class MatchController {
     }
 
     @GetMapping ("/{matchId}/note")
-    public List<Note> getAllNotes(@PathVariable String matchId) {
+    public List<NoteDto> getAllNotes(@PathVariable String matchId) {
         return noteService.getNotesFromMatch(matchId);
     }
 
