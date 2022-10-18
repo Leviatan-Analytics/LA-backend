@@ -12,6 +12,8 @@ import com.leviatan.backend.repository.NoteRepository;
 import com.leviatan.backend.repository.PlayerRepository;
 import com.leviatan.backend.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class NoteService {
+
+    private final Integer pageSize = 20;
 
     private final NoteRepository noteRepository;
 
@@ -99,8 +103,18 @@ public class NoteService {
                 .collect(Collectors.toList());
     }
 
-    public List<NoteDto> getNotes() {
-        return noteRepository.findAll().stream().map(Note::toDto).collect(Collectors.toList());
+    public List<NoteDto> getNotes(Integer page,
+                                  Optional<String> team,
+                                  Optional<String> topic,
+                                  //Optional<String> summoner,
+                                  Optional<Boolean> flagged ) {
+        Page<Note> notes = noteRepository.findAll(PageRequest.of(page, pageSize));
+        return notes.filter(note -> {
+            if (team.isPresent() && !note.getTeam().equals(team.get())) return false;
+            if (topic.isPresent() && !note.getTopic().equals(topic.get())) return false;
+            if (flagged.isPresent() && !note.getFlagged() == flagged.get()) return false;
+            return true;
+        }).stream().map(Note::toDto).collect(Collectors.toList());
     }
 
     public List<String> getNoteTopics() {

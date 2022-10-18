@@ -53,6 +53,8 @@ public class Note extends UUIDEntity{
 
     private Integer y;
 
+    private Boolean flagged;
+
     public NoteDto toDto() {
         return NoteDto.builder()
                 .id(this.getId())
@@ -70,6 +72,7 @@ public class Note extends UUIDEntity{
                 .includesWards(includesWards)
                 .x(x)
                 .y(y)
+                .flagged(flagged)
                 .build();
     }
 }

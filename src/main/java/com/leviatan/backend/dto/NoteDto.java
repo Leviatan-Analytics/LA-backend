@@ -35,4 +35,6 @@ public class NoteDto {
     private Integer x;
 
     private Integer y;
+
+    private Boolean flagged;
 }
