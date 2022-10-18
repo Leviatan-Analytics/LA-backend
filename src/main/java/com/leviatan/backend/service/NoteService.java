@@ -54,7 +54,7 @@ public class NoteService {
         return noteRepository.save(note).toDto();
     }
 
-    public void deleteNoteFromMatch(String id) {
+    public void deleteNote(String id) {
         Optional<Note> note = noteRepository.findById(id);
         note.ifPresent(noteRepository::delete);
     }
@@ -105,14 +105,13 @@ public class NoteService {
 
     public List<NoteDto> getNotes(Integer page,
                                   Optional<String> team,
-                                  Optional<String> topic,
+                                  Optional<String> topic
                                   //Optional<String> summoner,
-                                  Optional<Boolean> flagged ) {
+                                  ) {
         Page<Note> notes = noteRepository.findAll(PageRequest.of(page, pageSize));
         return notes.filter(note -> {
             if (team.isPresent() && !note.getTeam().equals(team.get())) return false;
             if (topic.isPresent() && !note.getTopic().equals(topic.get())) return false;
-            if (flagged.isPresent() && !note.getFlagged() == flagged.get()) return false;
             return true;
         }).stream().map(Note::toDto).collect(Collectors.toList());
     }

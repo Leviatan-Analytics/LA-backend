@@ -21,9 +21,8 @@ public class NoteController {
     public List<NoteDto> getNotes(@RequestParam Optional<Integer> page,
                                   @RequestParam Optional<String> team,
                                   @RequestParam Optional<String> topic,
-                                  @RequestParam Optional<String> summoner,
-                                  @RequestParam Optional<Boolean> flagged) {
-        return noteService.getNotes(page.orElse(0), team, topic, flagged);
+                                  @RequestParam Optional<String> summoner) {
+        return noteService.getNotes(page.orElse(0), team, topic);
     }
 
     @GetMapping("/topic")
@@ -34,5 +33,10 @@ public class NoteController {
     @GetMapping("/team")
     public List<String> getNoteTeams() {
         return noteService.getNoteTeams();
+    }
+
+    @DeleteMapping("/{noteId}")
+    public void deleteNote(@PathVariable("noteId") String noteId) {
+        noteService.deleteNote(noteId);
     }
 }

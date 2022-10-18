@@ -63,11 +63,6 @@ public class MatchController {
         return noteService.updateNoteToMatch(noteId, note);
     }
 
-    @DeleteMapping("/{matchId}/note/{noteId}")
-    public void deleteNoteFromMatch(@PathVariable("noteId") String noteId) {
-        noteService.deleteNoteFromMatch(noteId);
-    }
-
     @PutMapping("/{matchId}/trackdata/{playerId}")
     public Played addTrackDataToMatch(@PathVariable("matchId") String matchId, @PathVariable("playerId") String playedId, @RequestParam("file") MultipartFile garminFile) throws Exception {
         TCXReader reader = new TCXReader();
