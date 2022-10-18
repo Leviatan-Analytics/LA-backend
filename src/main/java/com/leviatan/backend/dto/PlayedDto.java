@@ -2,6 +2,7 @@ package com.leviatan.backend.dto;
 
 import com.leviatan.backend.model.Played;
 import com.leviatan.backend.model.Score;
+import com.leviatan.backend.model.analysis.metadata.ItemInfo;
 import com.leviatan.backend.model.league.Champion;
 import com.leviatan.backend.model.league.Position;
 import com.leviatan.backend.model.league.Team;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +21,7 @@ public class PlayedDto {
     private String id;
     private Team team;
     private Position position;
-    private Champion champion;
+    private String champion;
     private Integer gold;
     private Integer cs;
     private Double vision;
@@ -30,7 +33,7 @@ public class PlayedDto {
                 .id(played.getId())
                 .team(played.getTeam())
                 .position(played.getPosition())
-                .champion(played.getChampion())
+                .champion(played.getChampion().getName())
                 .gold(played.getGold())
                 .cs(played.getCs())
                 .vision(played.getVision())
