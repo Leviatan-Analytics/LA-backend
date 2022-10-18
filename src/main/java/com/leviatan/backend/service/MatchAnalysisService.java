@@ -67,13 +67,13 @@ public class MatchAnalysisService {
         Region region = matchAnalysis.getRegion() != null ? matchAnalysis.getRegion() : Region.LAS;
 
         Match match = Match.builder()
-                .matchId(matchAnalysis.getMatchId())
+                .matchId(matchAnalysis.getMatchId().replace('-', '_'))
                 .matchDate(matchAnalysis.getMatchDate())
                 .duration(matchAnalysis.getMatchDuration())
                 .region(region)
                 .organization(user.getOrganization())
                 .build();
-        matchRepository.save(match);
+        Match savedMatch = matchRepository.save(match);
 
         // for each player find or create and create a new played entry
         List<Player> players = matchAnalysis.getPlayers().stream()
@@ -111,7 +111,7 @@ public class MatchAnalysisService {
                 .collect(Collectors.toList());
 
         // save analysis data in table
-        return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user.getOrganization()));
+        return matchAnalysisRepository.save(MatchAnalysis.from(matchAnalysis, user.getOrganization(), savedMatch.getId()));
     }
 
     public Analysis getMatchAnalysis(String analysisId) {

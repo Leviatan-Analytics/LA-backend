@@ -49,7 +49,7 @@ public class MatchAnalysis extends Analysis {
     @Basic(fetch = FetchType.LAZY)
     private List<PlayerFrameMetadata> framesMetadata;
 
-    public static MatchAnalysis from(MatchAnalysisDto matchAnalysisDto, Organization organization) {
+    public static MatchAnalysis from(MatchAnalysisDto matchAnalysisDto, Organization organization, String savedMatchId) {
         MatchAnalysis analysis = MatchAnalysis.builder()
                 .analysisDate(matchAnalysisDto.getAnalysisDate())
                 .players(matchAnalysisDto.getPlayers())
@@ -57,7 +57,7 @@ public class MatchAnalysis extends Analysis {
                 .events(matchAnalysisDto.getEvents())
                 .framesMetadata(matchAnalysisDto.getFramesMetadata())
                 .build();
-        analysis.setMatchId(matchAnalysisDto.getMatchId());
+        analysis.setMatchId(savedMatchId);
         analysis.setMatchDate(matchAnalysisDto.getMatchDate());
         analysis.setMatchDuration(matchAnalysisDto.getMatchDuration());
         analysis.setOrganization(organization);
