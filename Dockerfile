@@ -8,7 +8,7 @@ RUN mvn package -DskipTests
 
 FROM openjdk:11-jre-slim
 
-WORKDIR /app
+WORKDIR /app/
 
 COPY --from=MAVEN_BUILD /build/target/LA-backend-0.0.1.jar /app/
 

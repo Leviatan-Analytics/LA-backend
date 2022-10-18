@@ -2,12 +2,10 @@ package com.leviatan.backend.controller;
 
 import com.leviatan.backend.dto.NoteDto;
 import com.leviatan.backend.service.NoteService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/note")
@@ -20,8 +18,11 @@ public class NoteController {
     }
 
     @GetMapping()
-    public List<NoteDto> getNotes() {
-        return noteService.getNotes();
+    public List<NoteDto> getNotes(@RequestParam Optional<Integer> page,
+                                  @RequestParam Optional<String> team,
+                                  @RequestParam Optional<String> topic,
+                                  @RequestParam Optional<String> summoner) {
+        return noteService.getNotes(page.orElse(0), team, topic);
     }
 
     @GetMapping("/topic")
@@ -32,5 +33,10 @@ public class NoteController {
     @GetMapping("/team")
     public List<String> getNoteTeams() {
         return noteService.getNoteTeams();
+    }
+
+    @DeleteMapping("/{noteId}")
+    public void deleteNote(@PathVariable("noteId") String noteId) {
+        noteService.deleteNote(noteId);
     }
 }
