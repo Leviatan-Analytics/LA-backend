@@ -5,6 +5,7 @@ import com.leviatan.backend.model.analysis.metadata.PlayerMetadata;
 import com.leviatan.backend.model.analysis.metadata.event.EventInfo;
 import com.leviatan.backend.model.analysis.position.MatchFrameInfo;
 import com.leviatan.backend.model.analysis.position.PlayerReducedMetadata;
+import com.leviatan.backend.model.league.Region;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,8 @@ public class MatchAnalysisDto {
 
     @NotNull
     private String matchId;
+
+    private Region region;
 
     @NotNull
     private Long matchDuration;

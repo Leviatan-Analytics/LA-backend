@@ -1,7 +1,7 @@
 package com.leviatan.backend.dto.manual_analysis.jungle;
 
 import com.leviatan.backend.dto.manual_analysis.LanePriority;
-import com.leviatan.backend.model.analysis.Team;
+import com.leviatan.backend.model.league.Team;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

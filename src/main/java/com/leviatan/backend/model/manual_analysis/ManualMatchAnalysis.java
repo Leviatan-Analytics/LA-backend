@@ -3,8 +3,8 @@ package com.leviatan.backend.model.manual_analysis;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leviatan.backend.dto.manual_analysis.ManualMatchAnalysisDto;
 import com.leviatan.backend.model.Analysis;
-import com.leviatan.backend.model.User;
-import com.leviatan.backend.service.ReducedAnalysisDto;
+import com.leviatan.backend.model.Organization;
+import com.leviatan.backend.dto.ReducedAnalysisDto;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -42,7 +42,7 @@ public class ManualMatchAnalysis extends Analysis {
     private ManualMatchSideAnalysis blueSideAnalysis;
 
 
-    public static ManualMatchAnalysis from(ManualMatchAnalysisDto matchAnalysis, User user) {
+    public static ManualMatchAnalysis from(ManualMatchAnalysisDto matchAnalysis, Organization organization) {
         ManualMatchAnalysis analysis = ManualMatchAnalysis.builder()
                 .analysisDate(matchAnalysis.getAnalysisDate() != null ? matchAnalysis.getAnalysisDate() : LocalDateTime.now())
                 .matchDate(matchAnalysis.getMatchInfo().getMatchDate())
@@ -52,7 +52,7 @@ public class ManualMatchAnalysis extends Analysis {
                 .blueSideAnalysis(matchAnalysis.getBlueSideAnalysis())
                 .tournamentName(matchAnalysis.getMatchInfo().getTournamentName())
                 .build();
-        analysis.setUser(user);
+        analysis.setOrganization(organization);
         return analysis;
     }
 

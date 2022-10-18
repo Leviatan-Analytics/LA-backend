@@ -8,9 +8,19 @@
 		<version>2.5.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<repositories>
+		<repository>
+			<id>jcenter</id>
+			<url>https://jcenter.bintray.com/</url>
+		</repository>
+		<repository>
+			<id>maven2</id>
+			<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
+	</repositories>
 	<groupId>com.leviatan</groupId>
-	<artifactId>backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>LA-backend</artifactId>
+	<version>0.0.1</version>
 	<name>LA-backend</name>
 	<description>Backend for Leviatan Analytics Project</description>
 	<properties>
@@ -39,6 +49,10 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -85,6 +99,16 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20220320</version>
+		</dependency>
+		<dependency>
+			<groupId>pl.jakubtrzcinski</groupId>
+			<artifactId>tcx-parser</artifactId>
+			<version>1.0.2.RELEASE</version>
 		</dependency>
 	</dependencies>
 
