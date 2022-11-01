@@ -4,16 +4,20 @@ import com.leviatan.backend.dto.NoteDto;
 import com.leviatan.backend.model.Flag;
 import com.leviatan.backend.model.Match;
 import com.leviatan.backend.model.Played;
+import com.leviatan.backend.model.analysis.metadata.TrackFrame;
 import com.leviatan.backend.model.analysis.metadata.TrackInfo;
 import com.leviatan.backend.repository.PlayedRepository;
 import com.leviatan.backend.service.FlagService;
 import com.leviatan.backend.service.NoteService;
-import com.leviatan.backend.utils.TCXReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.garmin.fit.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/match")
@@ -63,13 +67,21 @@ public class MatchController {
         return noteService.updateNoteToMatch(noteId, note);
     }
 
-    @PutMapping("/{matchId}/trackdata/{playerId}")
-    public Played addTrackDataToMatch(@PathVariable("matchId") String matchId, @PathVariable("playerId") String playedId, @RequestParam("file") MultipartFile garminFile) throws Exception {
-        TCXReader reader = new TCXReader();
-        reader.parse(garminFile);
-        TrackInfo track = new TrackInfo(reader.getBPMMean(), reader.getTracklist());
+    @PutMapping(value = "/{matchId}/trackdata/{playerId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Played addTrackDataToMatch(@PathVariable("matchId") String matchId, @PathVariable("playerId") String playerId, @RequestParam("file") MultipartFile garminFile) throws Exception {
+        FitDecoder decoder = new FitDecoder();
+        FitMessages messages = decoder.decode(garminFile.getInputStream());
 
-        Played played = playedRepository.getByPlayer_IdAndMatch_Id(playedId, matchId);
+        List<TrackFrame> frames = messages.getRecordMesgs().stream()
+                .map(record -> new ArrayList<>(record.getFields()))
+                .map(r -> new TrackFrame(r.get(0).getIntegerValue(), r.get(3).getIntegerValue(), r.get(2).getIntegerValue()/100))
+                .collect(Collectors.toList());
+
+        double mean = frames.stream().mapToInt(TrackFrame::getBpm).average().orElse(0);
+
+        TrackInfo track = new TrackInfo(mean, frames);
+
+        Played played = playedRepository.getByPlayer_IdAndMatch_Id(playerId, matchId).orElseThrow(() -> new Exception("Player not found in match"));
         played.setTrackInfo(track);
         return playedRepository.save(played);
     }
