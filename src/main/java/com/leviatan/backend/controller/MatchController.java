@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -54,12 +55,12 @@ public class MatchController {
     }
 
     @PostMapping("/{matchId}/note")
-    public NoteDto addNoteToMatch(@PathVariable String matchId, @RequestBody NoteDto note) {
+    public NoteDto addNoteToMatch(@PathVariable String matchId, @RequestBody @Valid NoteDto note) {
         return noteService.addNoteToMatch(matchId, note);
     }
 
     @PutMapping("/{matchId}/note/{noteId}")
-    public NoteDto updateNoteToMatch(@PathVariable("noteId") String noteId, @RequestBody NoteDto note) {
+    public NoteDto updateNoteToMatch(@PathVariable("noteId") String noteId, @RequestBody @Valid NoteDto note) {
         return noteService.updateNoteToMatch(noteId, note);
     }
 
