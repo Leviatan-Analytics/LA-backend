@@ -43,6 +43,11 @@ public class MatchAnalysisController {
         return matchAnalysisService.getAllMatchAnalyses();
     }
 
+    @GetMapping("/recent")
+    public List<MatchAnalysis> getRecent() {
+        return matchAnalysisService.getRecentMatchAnalyses();
+    }
+
     @GetMapping("/{analysisId}")
     public Analysis getMatchAnalysis(@PathVariable(name = "analysisId") String analysisId){
         return matchAnalysisService.getMatchAnalysis(analysisId);

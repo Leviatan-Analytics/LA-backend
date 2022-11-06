@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.garmin.fit.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,12 +59,12 @@ public class MatchController {
     }
 
     @PostMapping("/{matchId}/note")
-    public NoteDto addNoteToMatch(@PathVariable String matchId, @RequestBody NoteDto note) {
+    public NoteDto addNoteToMatch(@PathVariable String matchId, @RequestBody @Valid NoteDto note) {
         return noteService.addNoteToMatch(matchId, note);
     }
 
     @PutMapping("/{matchId}/note/{noteId}")
-    public NoteDto updateNoteToMatch(@PathVariable("noteId") String noteId, @RequestBody NoteDto note) {
+    public NoteDto updateNoteToMatch(@PathVariable("noteId") String noteId, @RequestBody @Valid NoteDto note) {
         return noteService.updateNoteToMatch(noteId, note);
     }
 

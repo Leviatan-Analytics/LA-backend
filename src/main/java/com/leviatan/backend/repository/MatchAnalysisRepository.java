@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface MatchAnalysisRepository extends JpaRepository<MatchAnalysis, String> {
     List<MatchAnalysis> findAllByOrganization_Id(String organizationId);
+    List<MatchAnalysis> findTop5ByOrganization_IdOrderByAnalysisDateDesc(String organizationId);
 }
