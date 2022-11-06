@@ -106,9 +106,11 @@
 			<version>20220320</version>
 		</dependency>
 		<dependency>
-			<groupId>pl.jakubtrzcinski</groupId>
-			<artifactId>tcx-parser</artifactId>
-			<version>1.0.2.RELEASE</version>
+			<groupId>com.garmin</groupId>
+			<artifactId>fit</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/fit.jar</systemPath>
 		</dependency>
 	</dependencies>
 
