@@ -1,13 +1,17 @@
 package com.leviatan.backend.controller;
 
+import com.leviatan.backend.dto.MatchAnalysisDto;
 import com.leviatan.backend.dto.NoteDto;
+import com.leviatan.backend.model.Analysis;
 import com.leviatan.backend.model.Flag;
 import com.leviatan.backend.model.Match;
 import com.leviatan.backend.model.Played;
+import com.leviatan.backend.model.analysis.MatchAnalysis;
 import com.leviatan.backend.model.analysis.metadata.TrackFrame;
 import com.leviatan.backend.model.analysis.metadata.TrackInfo;
 import com.leviatan.backend.repository.PlayedRepository;
 import com.leviatan.backend.service.FlagService;
+import com.leviatan.backend.service.MatchAnalysisService;
 import com.leviatan.backend.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,13 +33,16 @@ public class MatchController {
 
     private final NoteService noteService;
 
+    private final MatchAnalysisService matchAnalysisService;
+
     private final PlayedRepository playedRepository;
 
     @Autowired
-    public MatchController(FlagService flagService, NoteService noteService, PlayedRepository playedRepository) {
+    public MatchController(FlagService flagService, NoteService noteService, MatchAnalysisService matchAnalysisService, PlayedRepository playedRepository) {
         this.flagService = flagService;
         this.noteService = noteService;
         this.playedRepository = playedRepository;
+        this.matchAnalysisService = matchAnalysisService;
     }
 
     @GetMapping("/flag")
@@ -57,6 +64,9 @@ public class MatchController {
     public List<NoteDto> getAllNotes(@PathVariable String matchId) {
         return noteService.getNotesFromMatch(matchId);
     }
+
+    @GetMapping ("/{matchId}/analysis")
+    public Analysis getAnalysisFromMatch(@PathVariable String matchId) { return matchAnalysisService.getMatchAnalysisByMatchId(matchId); }
 
     @PostMapping("/{matchId}/note")
     public NoteDto addNoteToMatch(@PathVariable String matchId, @RequestBody @Valid NoteDto note) {
@@ -86,4 +96,6 @@ public class MatchController {
         played.setTrackInfo(track);
         return playedRepository.save(played);
     }
+
+
 }
