@@ -17,6 +17,8 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
     @Query(nativeQuery = true, value = "select * from analysis a where a.organization_id = ?1 and a.dtype = ?2")
     Page<Analysis> findAnalysesPaginated(String organizationId, String analysisType, Pageable pageable);
 
+    Analysis findByMatchId(String matchId);
+
     @Transactional
     @Modifying
     @Query("delete from Analysis a where a.id = ?1 and a.organization.id = ?2")
