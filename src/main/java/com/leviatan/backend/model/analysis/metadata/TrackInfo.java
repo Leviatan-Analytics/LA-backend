@@ -13,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class TrackInfo {
-    private short averageBPM;
+    private double averageBPM;
     private List<TrackFrame> trackFrames;
 }

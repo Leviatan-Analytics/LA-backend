@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class TrackFrame {
     private long time;
     private int bpm;
+    private int stress;
 }

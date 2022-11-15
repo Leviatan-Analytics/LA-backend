@@ -129,6 +129,12 @@ public class MatchAnalysisService {
         return matchAnalysisRepository.findAllByOrganization_Id(sessionUtils.getLoggedUserInfo().getOrganization().getId());
     }
 
+    public List<MatchAnalysis> getRecentMatchAnalyses() {
+        return matchAnalysisRepository.findTop5ByOrganization_IdOrderByAnalysisDateDesc(
+                sessionUtils.getLoggedUserInfo().getOrganization().getId()
+        );
+    }
+
     public ManualMatchAnalysis saveManualMatchAnalysis(ManualMatchAnalysisDto matchAnalysis) {
         User user = sessionUtils.getLoggedUserInfo();
         return manualMatchAnalysisRepository.save(ManualMatchAnalysis.from(matchAnalysis, user.getOrganization()));
