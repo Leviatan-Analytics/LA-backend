@@ -48,7 +48,7 @@ public class PlayerFlagService {
         User user = sessionUtils.getLoggedUserInfo();
         Player player = playerRepository.getById(playerId);
 
-        Optional<PlayerFlag> flag = flagRepository.findByUserAndPlayer_Id(user, player.getPlayerId());
+        Optional<PlayerFlag> flag = flagRepository.findByUserAndPlayer_Id(user, player.getId());
         flag.ifPresent(flagRepository::delete);
     }
 }
