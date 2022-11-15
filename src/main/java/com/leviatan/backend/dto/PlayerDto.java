@@ -18,13 +18,12 @@ public class PlayerDto {
     private String summonerName;
     private Boolean flagged;
 
-    public static PlayerDto fromPlayerAndUserId(Player player, String userId) {
+    public static PlayerDto fromPlayerAndUserId(Player player, String userId, Boolean flagged) {
         return PlayerDto.builder()
                 .id(player.getId())
                 .playerId(player.getPlayerId())
                 .summonerName(player.getSummonerName())
-                .flagged(player.getPlayerFlag()
-                        .stream().anyMatch(playerFlag -> playerFlag.getUser().getId().equals(userId)))
+                .flagged(flagged)
                 .build();
     }
 }

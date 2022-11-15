@@ -35,7 +35,7 @@ public class PlayerFlagService {
 
     public PlayerFlag createFlag(String playerId) {
         User user = sessionUtils.getLoggedUserInfo();
-        Player player = playerRepository.getById(playerId);
+        Player player = playerRepository.findById(playerId).get();
 
         PlayerFlag flag = new PlayerFlag();
         flag.setUser(user);

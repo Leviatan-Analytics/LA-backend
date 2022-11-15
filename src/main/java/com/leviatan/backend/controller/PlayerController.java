@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/player")
@@ -33,7 +34,8 @@ public class PlayerController {
             @RequestParam Optional<Boolean> flagged,
             @RequestParam Optional<Integer> page
     ) {
-       return playerService.getAllPlayers(playerName.orElse(""), flagged.orElse(false), page.orElse(0));
+        List<String> flagsFound = playerFlagService.getAllFlagged().stream().map(Player::getId).collect(Collectors.toList());
+       return playerService.getAllPlayers(playerName.orElse(""), flagged.orElse(false), flagsFound, page.orElse(0));
     }
 
     @PostMapping("/{playerId}/flag")
