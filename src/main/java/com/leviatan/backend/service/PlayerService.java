@@ -34,12 +34,12 @@ public class PlayerService {
     public Page<PlayerDto> getAllPlayers(String playerName, Boolean flaggedOptional, Integer page) {
         User user = sessionUtils.getLoggedUserInfo();
         if (flaggedOptional) {
-            return playerRepository.findAllByOrganization_IdAndSummonerNameContainingAndPlayerFlag_User_Id(
-                            user.getOrganization().getId(),
-                            playerName,
-                            user.getId(),
-                            PageRequest.of(page, 10))
-                    .map(player ->
+            Page<Player> playerPage = playerRepository.findAllByOrganization_IdAndSummonerNameContainingAndPlayerFlag_User_Id(
+                    user.getOrganization().getId(),
+                    playerName,
+                    user.getId(),
+                    PageRequest.of(page, 10));
+            return playerPage.map(player ->
                             PlayerDto.fromPlayerAndUserId(player, user.getId())
                     );
         } else {
