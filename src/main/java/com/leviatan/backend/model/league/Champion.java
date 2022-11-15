@@ -100,7 +100,7 @@ public enum Champion {
     NIDALEE("Nidalee"),
     NILAH("Nilah"),
     NOCTURNE("Nocturne"),
-    NUNU("Nunu and Willump"),
+    NUNU("Nunu & Willump"),
 
     OLAF("Olaf"),
     ORIANNA("Orianna"),

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -20,6 +21,7 @@ public class NoteDto {
 
     private String topic;
 
+    @Size(max = 500)
     private String content;
 
     private List<String> relatedChampions;

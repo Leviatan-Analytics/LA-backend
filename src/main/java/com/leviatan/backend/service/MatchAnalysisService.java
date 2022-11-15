@@ -121,8 +121,18 @@ public class MatchAnalysisService {
         return MatchAnalysis.from((MatchAnalysis) analysis, played);
     }
 
+    public Analysis getMatchAnalysisByMatchId(String matchId) {
+        return analysisRepository.findByMatchId(matchId);
+    }
+
     public List<MatchAnalysis> getAllMatchAnalyses() {
         return matchAnalysisRepository.findAllByOrganization_Id(sessionUtils.getLoggedUserInfo().getOrganization().getId());
+    }
+
+    public List<MatchAnalysis> getRecentMatchAnalyses() {
+        return matchAnalysisRepository.findTop5ByOrganization_IdOrderByAnalysisDateDesc(
+                sessionUtils.getLoggedUserInfo().getOrganization().getId()
+        );
     }
 
     public ManualMatchAnalysis saveManualMatchAnalysis(ManualMatchAnalysisDto matchAnalysis) {
