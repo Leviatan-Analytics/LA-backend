@@ -13,5 +13,6 @@ import java.util.Optional;
 public interface NoteRepository extends JpaRepository<Note, String> {
 
     Page<Note> findAll(Pageable pageable);
+    Page<Note> getAllByContentContaining(String content, Pageable pageable);
     List<Note> findByOrganization_IdAndMatch_Id(String organizationId, String id);
 }
