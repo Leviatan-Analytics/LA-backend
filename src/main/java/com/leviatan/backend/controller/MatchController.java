@@ -1,12 +1,10 @@
 package com.leviatan.backend.controller;
 
-import com.leviatan.backend.dto.MatchAnalysisDto;
 import com.leviatan.backend.dto.NoteDto;
 import com.leviatan.backend.model.Analysis;
 import com.leviatan.backend.model.Flag;
 import com.leviatan.backend.model.Match;
 import com.leviatan.backend.model.Played;
-import com.leviatan.backend.model.analysis.MatchAnalysis;
 import com.leviatan.backend.model.analysis.metadata.TrackFrame;
 import com.leviatan.backend.model.analysis.metadata.TrackInfo;
 import com.leviatan.backend.repository.PlayedRepository;
@@ -17,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.garmin.fit.*;
+import com.leviatan.fit.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
