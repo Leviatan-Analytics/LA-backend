@@ -1,6 +1,5 @@
 package com.leviatan.backend.service;
 
-import com.garmin.fit.Bool;
 import com.leviatan.backend.dto.NoteDto;
 import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.model.Match;
