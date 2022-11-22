@@ -1,5 +1,6 @@
 package com.leviatan.backend.service;
 
+import com.garmin.fit.Bool;
 import com.leviatan.backend.dto.NoteDto;
 import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.model.Match;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -105,13 +107,17 @@ public class NoteService {
 
     public List<NoteDto> getNotes(Integer page,
                                   Optional<String> team,
-                                  Optional<String> topic
-                                  //Optional<String> summoner,
+                                  Optional<String> topic,
+                                  Optional<String> search,
+                                  Optional<Boolean> flag,
+                                  Optional<List<String>> summoner
                                   ) {
-        Page<Note> notes = noteRepository.findAll(PageRequest.of(page, pageSize));
+        Page<Note> notes = noteRepository.getAllByContentContaining(search.orElse(""), PageRequest.of(page, pageSize));
         return notes.filter(note -> {
-            if (team.isPresent() && !note.getTeam().equals(team.get())) return false;
-            if (topic.isPresent() && !note.getTopic().equals(topic.get())) return false;
+            if (team.isPresent() && (note.getTeam() == null || !note.getTeam().equals(team.get()))) return false;
+            if (topic.isPresent() && (note.getTopic() == null || !note.getTopic().equals(topic.get()))) return false;
+            if (summoner.isPresent() && ((note.getPlayer() == null || note.getPlayer().getSummonerName() == null) || !summoner.get().contains(note.getPlayer().getSummonerName()))) return false;
+            if (flag.isPresent() && flag.get() && (note.getFlagged() == null || !note.getFlagged())) return false;
             return true;
         }).stream().map(Note::toDto).collect(Collectors.toList());
     }
@@ -130,5 +136,28 @@ public class NoteService {
                 .distinct()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getNoteSummoners() {
+        return noteRepository.findAll().stream()
+                .map(note -> {
+                    if (note.getPlayer() != null) return note.getPlayer().getSummonerName();
+                    else return null;
+                })
+                .distinct()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    public Note flagNote(String noteId, Boolean flag) {
+        Optional<Note> selectedNote = noteRepository.findById(noteId);
+        if (selectedNote.isPresent()) {
+            Note presentNote = selectedNote.get();
+            presentNote.setFlagged(flag);
+            noteRepository.save(presentNote);
+            return presentNote;
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 }
