@@ -5,10 +5,8 @@ import com.leviatan.backend.dto.PlayerWithMatches;
 import com.leviatan.backend.exception.NotFoundException;
 import com.leviatan.backend.model.Played;
 import com.leviatan.backend.model.Player;
-import com.leviatan.backend.model.PlayerFlag;
 import com.leviatan.backend.model.User;
 import com.leviatan.backend.repository.PlayedRepository;
-import com.leviatan.backend.repository.PlayerFlagRepository;
 import com.leviatan.backend.repository.PlayerRepository;
 import com.leviatan.backend.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,17 +33,19 @@ public class PlayerService {
     public Page<PlayerDto> getAllPlayers(String playerName, Boolean flagged, List<String> flaggedIds, Integer page) {
         User user = sessionUtils.getLoggedUserInfo();
         if (flagged) {
-            Page<Player> playerPage = playerRepository.findAllByIdInAndSummonerNameContaining(
+            Page<Player> playerPage = playerRepository.findAllByIdInAndSummonerNameContainingAndOrganization_Id(
                     flaggedIds,
                     playerName,
-                    PageRequest.of(page, 10));
+                    PageRequest.of(page, 10),
+                    user.getOrganization().getId());
             return playerPage.map(player ->
                             PlayerDto.fromPlayerAndUserId(player, user.getId(), flaggedIds.contains(player.getId()))
                     );
         } else {
-            return playerRepository.findAllBySummonerNameContaining(
+            return playerRepository.findAllBySummonerNameContainingAndOrganization_Id(
                             playerName,
-                            PageRequest.of(page, 10))
+                            PageRequest.of(page, 10),
+                            user.getOrganization().getId())
                     .map(player ->
                             PlayerDto.fromPlayerAndUserId(player, user.getId(), flaggedIds.contains(player.getId()))
                     );

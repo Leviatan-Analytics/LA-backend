@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PlayerRepository extends JpaRepository<Player, String> {
-    Page<Player> findAllBySummonerNameContaining(String summonerName, Pageable pageable);
-    Page<Player> findAllByIdInAndSummonerNameContaining(List<String> ids, String summonerName, Pageable pageable);
+    Page<Player> findAllBySummonerNameContainingAndOrganization_Id(String summonerName, Pageable pageable, String organizationId);
+    Page<Player> findAllByIdInAndSummonerNameContainingAndOrganization_Id(List<String> ids, String summonerName, Pageable pageable, String organizationId);
     Optional<Player> findByIdAndOrganization_Id(String id, String organizationId);
     Optional<Player> findBySummonerNameAndOrganization_Id(String summonerName, String organizationId);
 
